@@ -1,0 +1,15 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+h3 {
+  color: #333;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.btn {
+  border-radius: 8px;
+}
