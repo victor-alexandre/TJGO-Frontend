@@ -10,37 +10,37 @@
 
   <div class="container mt-5">
     <div class="card shadow p-4">
-      <h3 class="text-center mb-4">Cadastro de Usuário</h3>
+      <h3 class="text-center text-secondary fw-bold mb-4 ">Cadastro de Usuário</h3>
 
-      <form>
+      <form action="index.html">
         <div class="mb-3">
-          <label for="nome" class="form-label">Nome</label>
+          <label for="nome" class="form-label fw-bold">Nome *</label>
           <input type="text" id="nome" class="form-control" required>
         </div>
 
         <div class="mb-3">
-          <label for="cpf" class="form-label">CPF</label>
+          <label for="cpf" class="form-label fw-bold">CPF *</label>
           <input type="text" id="cpf" class="form-control" maxlength="14" placeholder="Digite seu CPF (ex: 123.456.789-00)" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" required>
         </div>
 
         <div class="mb-3">
-          <label for="email" class="form-label">E-mail</label>
+          <label for="email" class="form-label fw-bold">E-mail *</label>
           <input type="email" id="email" class="form-control" placeholder="Digite seu e-mail (ex: nome@dominio.com)" 
           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
         </div>
 
         <div class="mb-3">
-          <label for="profissao" class="form-label">Profissão</label>
+          <label for="profissao" class="form-label fw-bold">Profissão</label>
           <input type="text" id="profissao" class="form-control">
         </div>
 
         <div class="mb-3">
-          <label for="nascimento" class="form-label">Data de Nascimento</label>
+          <label for="nascimento" class="form-label fw-bold">Data de Nascimento *</label>
           <input type="date" id="nascimento" class="form-control" required>
         </div>
 
-        <h5 class="mt-4">Endereço</h5>
-        <div class="row">
+        <h5 class="mt-4 fw-bold">Endereço</h5>
+        <div class="row fw-bold">
           <div class="col-md-8 mb-3">
             <label class="form-label">Logradouro</label>
             <input type="text" class="form-control">
@@ -51,7 +51,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row fw-bold">
           <div class="col-md-4 mb-3">
             <label class="form-label">Quadra</label>
             <input type="text" class="form-control">
@@ -65,7 +65,7 @@
             <input type="text" class="form-control">
           </div>
         </div>
-        <div class="row">
+        <div class="row fw-bold">
           <div class="col-md-4 mb-3">
             <label class="form-label">CEP</label>
             <input type="text" class="form-control">
@@ -136,8 +136,9 @@
             <option value="TO">TO</option>
           </select>
         </div>
+        <p class="mt-2 text-muted"><small>* Campos obrigatórios</small></p>
         <div class="d-grid">
-          <a href="index.html" class="btn btn-success">Salvar</a>
+          <button type="submit" class="btn btn-success">Salvar</button>
         </div>
       </form>
     </div>
