@@ -6,3 +6,25 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     background-color: #ffffff;
 }
+
+
+body {
+      background:  #f7faf8;
+}
+
+#alerta {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      min-width: 300px;
+      z-index: 1050;
+      opacity: 0;
+      transform: translateY(30px); 
+      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    }
+
+
+#alerta.show {
+      opacity: 1;
+      transform: translateY(0);
+}
