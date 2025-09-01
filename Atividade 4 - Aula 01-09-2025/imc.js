@@ -74,17 +74,17 @@ limparBtn.addEventListener('click', function () {
 function getClassificacao(imc) {
     if (imc < 16) {
         return { situacao: 'Magreza grave', grau: '-', cor: 'bg-danger' };
-    } else if (imc <= 16.9) {
+    } else if (imc <= 16.99) {
         return { situacao: 'Magreza moderada', grau: '-', cor: 'bg-danger' };
     } else if (imc <= 18.5) {
         return { situacao: 'Magreza leve', grau: '-', cor: 'bg-warning' };
-    } else if (imc <= 24.9) {
+    } else if (imc <= 24.99) {
         return { situacao: 'Peso ideal', grau: '0', cor: 'bg-success' };
-    } else if (imc <= 29.9) {
+    } else if (imc <= 29.99) {
         return { situacao: 'Sobrepeso', grau: '-', cor: 'bg-warning' };
-    } else if (imc <= 34.9) {
+    } else if (imc <= 34.99) {
         return { situacao: 'Obesidade', grau: 'I', cor: 'bg-danger' };
-    } else if (imc <= 39.9) {
+    } else if (imc <= 39.99) {
         return { situacao: 'Obesidade severa', grau: 'II', cor: 'bg-danger' };
     } else {
         return { situacao: 'Obesidade mórbida', grau: 'III', cor: 'bg-danger' };
