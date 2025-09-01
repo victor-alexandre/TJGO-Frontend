@@ -1,0 +1,14 @@
+/* Estilizando o corpo da página para centralizar o container verticalmente */
+body {
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 960px;
+}
+
+.badge {
+    color: rgb(255, 255, 255) !important;
+}
