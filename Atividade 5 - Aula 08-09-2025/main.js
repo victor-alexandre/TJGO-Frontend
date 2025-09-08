@@ -154,3 +154,29 @@ class Apartamento {
         this.morador.mostrarDadosMorador();
     }
 }
+
+const edificioResidencialSol = new Edificio(
+    "Residencial Sol",
+    "Rua das Flores, 123",
+    "Centro",
+    "Cidade Feliz",
+    "SP"
+);
+
+const morador1 = new Morador("Ana Silva", "111.222.333-44", "ANA#101");
+const morador2 = new Morador("Bruno Costa", "222.333.444-55", "BRUNO#102");
+const morador3 = new Morador("Carlos Dias", "333.444.555-66", "CARLOS#201");
+const morador4 = new Morador("Daniela Lima", "444.555.666-77", "DANI#202");
+const morador5 = new Morador("Eduardo Souza", "555.666.777-88", "EDU#301");
+
+const apartamento101 = new Apartamento(101, 1, "A", edificioResidencialSol, morador1);
+const apartamento102 = new Apartamento(102, 1, "A", edificioResidencialSol, morador2);
+const apartamento201 = new Apartamento(201, 2, "B", edificioResidencialSol, morador3);
+const apartamento202 = new Apartamento(202, 2, "B", edificioResidencialSol, morador4);
+const apartamento301 = new Apartamento(301, 3, "C", edificioResidencialSol, morador5);
+
+apartamento101.mostrarDadosApartamento();
+apartamento102.mostrarDadosApartamento();
+apartamento201.mostrarDadosApartamento();
+apartamento202.mostrarDadosApartamento();
+apartamento301.mostrarDadosApartamento();
