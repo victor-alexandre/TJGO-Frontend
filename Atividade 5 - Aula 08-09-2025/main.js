@@ -1,23 +1,23 @@
 class Pessoa {
     constructor(nome, cpf) {
-        this.nome = nome;
-        this.cpf = cpf;
+        this._nome = nome;
+        this._cpf = cpf;
     }
 
     get nome() {
-        return this.nome;
+        return this._nome;
     }
 
     set nome(novoNome) {
-        this.nome = novoNome;
+        this._nome = novoNome;
     }
 
     get cpf() {
-        return this.cpf;
+        return this._cpf;
     }
 
     set cpf(novoCpf) {
-        this.cpf = novoCpf;
+        this._cpf = novoCpf;
     }
 
     mostrarDadosPessoa() {
@@ -28,15 +28,15 @@ class Pessoa {
 class Morador extends Pessoa {
     constructor(nome, cpf, codigoAcesso) {
         super(nome, cpf);
-        this.codigoAcesso = codigoAcesso;
+        this._codigoAcesso = codigoAcesso;
     }
 
     get codigoAcesso() {
-        return this.codigoAcesso;
+        return this._codigoAcesso;
     }
 
     set codigoAcesso(novoCodigo) {
-        this.codigoAcesso = novoCodigo;
+        this._codigoAcesso = novoCodigo;
     }
 
     mostrarDadosMorador() {
@@ -47,51 +47,51 @@ class Morador extends Pessoa {
 
 class Edificio {
     constructor(nome, endereco, bairro, cidade, uf) {
-        this.nome = nome;
-        this.endereco = endereco;
-        this.bairro = bairro;
-        this.cidade = cidade;
-        this.uf = uf;
+        this._nome = nome;
+        this._endereco = endereco;
+        this._bairro = bairro;
+        this._cidade = cidade;
+        this._uf = uf;
     }
 
     get nome() {
-        return this.nome;
+        return this._nome;
     }
 
     set nome(novoNome) {
-        this.nome = novoNome;
+        this._nome = novoNome;
     }
 
     get endereco() {
-        return this.endereco;
+        return this._endereco;
     }
 
     set endereco(novoEndereco) {
-        this.endereco = novoEndereco;
+        this._endereco = novoEndereco;
     }
 
     get bairro() {
-        return this.bairro;
+        return this._bairro;
     }
 
     set bairro(novoBairro) {
-        this.bairro = novoBairro;
+        this._bairro = novoBairro;
     }
 
     get cidade() {
-        return this.cidade;
+        return this._cidade;
     }
 
     set cidade(novaCidade) {
-        this.cidade = novaCidade;
+        this._cidade = novaCidade;
     }
 
     get uf() {
-        return this.uf;
+        return this._uf;
     }
 
     set uf(novaUf) {
-        this.uf = novaUf;
+        this._uf = novaUf;
     }
 
     mostrarDadosEdificio() {
@@ -101,51 +101,51 @@ class Edificio {
 
 class Apartamento {
     constructor(numero, andar, bloco, edificio, morador) {
-        this.numero = numero;
-        this.andar = andar;
-        this.bloco = bloco;
-        this.edificio = edificio;
-        this.morador = morador;
+        this._numero = numero;
+        this._andar = andar;
+        this._bloco = bloco;
+        this._edificio = edificio;
+        this._morador = morador;
     }
 
     get numero() {
-        return this.numero;
+        return this._numero;
     }
 
     set numero(novoNumero) {
-        this.numero = novoNumero;
+        this._numero = novoNumero;
     }
 
     get andar() {
-        return this.andar;
+        return this._andar;
     }
 
     set andar(novoAndar) {
-        this.andar = novoAndar;
+        this._andar = novoAndar;
     }
 
     get bloco() {
-        return this.bloco;
+        return this._bloco;
     }
 
     set bloco(novoBloco) {
-        this.bloco = novoBloco;
+        this._bloco = novoBloco;
     }
 
     get edificio() {
-        return this.edificio;
+        return this._edificio;
     }
 
     set edificio(novoEdificio) {
-        this.edificio = novoEdificio;
+        this._edificio = novoEdificio;
     }
 
     get morador() {
-        return this.morador;
+        return this._morador;
     }
 
     set morador(novoMorador) {
-        this.morador = novoMorador;
+        this._morador = novoMorador;
     }
 
     mostrarDadosApartamento() {
