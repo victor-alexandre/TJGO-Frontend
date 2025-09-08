@@ -98,3 +98,59 @@ class Edificio {
         console.log(`Nome: ${this.nome}, Endereço: ${this.endereco}, Bairro: ${this.bairro}, Cidade: ${this.cidade}, UF: ${this.uf}`);
     }
 }
+
+class Apartamento {
+    constructor(numero, andar, bloco, edificio, morador) {
+        this.numero = numero;
+        this.andar = andar;
+        this.bloco = bloco;
+        this.edificio = edificio;
+        this.morador = morador;
+    }
+
+    get numero() {
+        return this.numero;
+    }
+
+    set numero(novoNumero) {
+        this.numero = novoNumero;
+    }
+
+    get andar() {
+        return this.andar;
+    }
+
+    set andar(novoAndar) {
+        this.andar = novoAndar;
+    }
+
+    get bloco() {
+        return this.bloco;
+    }
+
+    set bloco(novoBloco) {
+        this.bloco = novoBloco;
+    }
+
+    get edificio() {
+        return this.edificio;
+    }
+
+    set edificio(novoEdificio) {
+        this.edificio = novoEdificio;
+    }
+
+    get morador() {
+        return this.morador;
+    }
+
+    set morador(novoMorador) {
+        this.morador = novoMorador;
+    }
+
+    mostrarDadosApartamento() {
+        console.log(`Número: ${this.numero}, Andar: ${this.andar}, Bloco: ${this.bloco}`);
+        this.edificio.mostrarDadosEdificio();
+        this.morador.mostrarDadosMorador();
+    }
+}
