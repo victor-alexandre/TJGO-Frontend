@@ -24,3 +24,23 @@ class Pessoa {
         console.log(`Nome: ${this.nome}, CPF: ${this.cpf}`);
     }
 }
+
+class Morador extends Pessoa {
+    constructor(nome, cpf, codigoAcesso) {
+        super(nome, cpf);
+        this.codigoAcesso = codigoAcesso;
+    }
+
+    get codigoAcesso() {
+        return this.codigoAcesso;
+    }
+
+    set codigoAcesso(novoCodigo) {
+        this.codigoAcesso = novoCodigo;
+    }
+
+    mostrarDadosMorador() {
+        this.mostrarDadosPessoa();
+        console.log(`Código de Acesso: ${this.codigoAcesso}`);
+    }
+}
