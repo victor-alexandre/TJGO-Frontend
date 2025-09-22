@@ -163,20 +163,38 @@ SGCPD/
 ---
 
 ## 🗂️ Divisão de Tarefas
-| Tópico       | Tarefa                               | Responsável | Status | Observações |
-|--------------|--------------------------------------|-------------|--------|-------------|
-| Documentação | Criar Readme                         | Victor      | OK     |             |
-| Documentação | Criar MER                            | Owen        | OK     |             |
-| Documentação | Criar DER                            |             |        |             |
-| Documentação | Definir requisitos                   | Renato      | OK     | Será adicionado ao Readme |
-| Documentação | Consolidar documentação              | Victor      |        |             |
-| Design       | Fluxos no Figma                      | Victor      | OK     |             |
-| Código       | API Node.js                          |             |        |             |
-| Código       | Frontend React                       |             |        |             |
-| Código       | Docker e Docker Compose              |             |        |             |
-| Código       | Banco (Postgres ou migrations Ruby)  |             |        |             |
-| Revisão Geral| Revisão                              | Todos       |        |             |
-| Apresentação | Apresentar projeto                   |             |        |             |
+| Tópico        | Tarefa                                                   | Responsável     | Data Entrega | Status       | Observações |
+|---------------|----------------------------------------------------------|-----------------|--------------|--------------|-------------|
+| Documentação  | Criar Readme no git                                      | Victor          | 15/09/2025   | OK           |             |
+| Documentação  | Criar MER do banco                                       | Owen            | 15/09/2025   | OK           |             |
+| Documentação  | Criar DER do banco                                       | Victor          | 22/09/2025   | OK           |             |
+| Documentação  | Definir os requisitos                                    | Renato          | 17/09/2025   | OK           | Os requisitos definidos serão colocados no Readme |
+| Documentação  | Consolidar a documentação no Readme do GitHub            | Victor          |              | Em andamento | Conforme os artefatos estão sendo produzidos |
+| Design        | Criar os fluxos no Figma                                 | Victor          | 21/09/2025   | OK           |             |
+| Código        | Criar a API - backend Node                               | Owen/Renato     |              |              |             |
+| Código        | Definir rotas                                            | Owen            |              |              |             |
+| Código        | Adicionar usuário                                        | Renato          |              |              |             |
+| Código        | Editar usuário                                           | Renato          |              |              |             |
+| Código        | Adicionar Nota                                           | Renato          |              |              |             |
+| Código        | Buscar Nota                                              | Renato          |              |              |             |
+| Código        | Editar Nota                                              | Renato          |              |              |             |
+| Código        | Adicionar TAG                                            | Renato          |              |              |             |
+| Código        | Criar o arquivo de configuração Backend: `dockerfile`    | Renato          |              |              |             |
+| Código        | Criar o banco - Postgres (ou migrations estilo Ruby)     | Owen/Renato     |              |              |             |
+| Código        | Criar o frontend - React                                 | Owen/Solenir    |              |              |             |
+| Código        | Definir Componentes                                      | Owen            |              |              |             |
+| Código        | Tela Cadastro                                            | Solenir         |              |              |             |
+| Código        | Tela Login                                               | Solenir         |              |              |             |
+| Código        | Tela página principal                                    | Owen            |              |              |             |
+| Código        | Tela de adicionar nota                                   | Owen            |              |              |             |
+| Código        | Tela de editar perfil                                    | Solenir         |              |              |             |
+| Código        | Menu Lateral                                             | Owen            |              |              |             |
+| Código        | Busca de notas por tag, título e conteúdo                | Owen            |              |              |             |
+| Código        | Criar o arquivo de configuração Frontend: `dockerfile`   | Solenir         |              |              |             |
+| Código        | Criar o deploy com o docker compose                      | Owen            |              |              |             |
+| Revisão Geral | Revisão geral do projeto                                 | Todos           |              |              |             |
+| Apresentação  | Apresentar durante a aula o projeto                      | Victor/Owen     |              |              |             |
+
 
 ---
 
