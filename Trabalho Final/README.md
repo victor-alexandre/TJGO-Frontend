@@ -7,6 +7,13 @@ O sistema permite criar, organizar, buscar e filtrar informações de forma simp
 
 ---
 
+## 📅 Cronograma de Entregas
+- **Entrega 1 (22/09/2025)** → [Protótipo visual](https://www.figma.com/design/9uV5xXigW1zoeqREa4u6e6/Tarefa-Frontend---UFG-TJGO?m=auto&t=JKAtn9DRB2dW3C13-1) de navegação feito no Figma ✅.  
+- **Entrega 2 (29/09/2025)** → CRUD funcional de uma entidade - Será apresentado em aula.  
+- **Entrega 3 (06/10/2025)** → Projeto final completo (CRUD + filtros + responsividade) - Será apresentado em aula.  
+
+---
+
 ## 🚀 Funcionalidades
 - **CRUD de Usuários**: Criar, visualizar, atualizar e excluir usuários.
 - **CRUD de Conteúdo**: Criar, visualizar, atualizar e excluir notas de texto.
@@ -68,13 +75,6 @@ SGCPD/
    - Front-End → `http://localhost:3000`  
    - Back-End (API) → `http://localhost:5000`  
    - Banco de Dados → `localhost:5432`  
-
----
-
-## 📅 Ciclo de Entregas
-- **Entrega 1 (22/09/2025)** → Protótipo visual de navegação (wireframe/modelo).  
-- **Entrega 2 (29/09/2025)** → CRUD funcional de uma entidade.  
-- **Entrega 3 (06/10/2025)** → Projeto final completo (CRUD + filtros + responsividade).  
 
 ---
 
