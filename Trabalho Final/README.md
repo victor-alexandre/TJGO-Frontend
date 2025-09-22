@@ -108,7 +108,8 @@ erDiagram
 ---
 
 ## 📂 Estrutura do Projeto (Proposta)
-\`\`\`bash
+
+```bash
 SGCPD/
 │── client/
 │   ├── public/
@@ -128,7 +129,7 @@ SGCPD/
 │
 │── docker-compose.yml
 │── README.md
-\`\`\`
+```
 
 ---
 
@@ -153,11 +154,11 @@ SGCPD/
 ---
 
 ## 👨‍💻 Equipe de Desenvolvimento
-- Owen → Estrutura de componentes React e navegação.  
-- Solenir → Estilização (CSS) e responsividade.  
-- Renato → API Node.js.  
+- Owen → Fullstack - Estrutura de componentes React e navegação.  
+- Solenir → Fullstack - Estilização (CSS) e responsividade.  
+- Renato → Backend - API Node.js.  
 - Owen/Solenir → Integração com PostgreSQL e busca.  
-- Victor Alexandre → Documentação, Design, QA (PO)  
+- Victor Alexandre → PO/QA - Documentação, Design, Testes/Validação  
 
 ---
 
