@@ -1,5 +1,20 @@
 # Sistema de Gerenciamento de Conteúdo Pessoal Dinâmico (SGCPD)
 
+## 📑 Sumário
+- [📌 Descrição](#-descrição)  
+- [📅 Cronograma de Entregas](#-cronograma-de-entregas)  
+- [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)  
+- [🚀 Funcionalidades](#-funcionalidades)  
+- [📋 Requisitos do Sistema](#-requisitos-do-sistema)  
+- [🗃️ Modelo Entidade-Relacionamento (MER)](#️-modelo-entidade-relacionamento-mer)  
+- [📂 Estrutura do Projeto](#-estrutura-do-projeto-proposta)  
+- [⚙️ Como Executar o Projeto](#️-como-executar-o-projeto)  
+- [👨‍💻 Equipe de Desenvolvimento](#-equipe-de-desenvolvimento)  
+- [🗂️ Divisão de Tarefas](#️-divisão-de-tarefas)  
+- [📖 Licença](#-licença)  
+
+---
+
 ## 📌 Descrição
 O **SGCPD** é uma aplicação web desenvolvida com **Node.js, React e PostgreSQL**, conteinerizada com **Docker**, 
 para gerenciamento de conteúdos pessoais (ex.: notas de texto).  
@@ -8,91 +23,161 @@ O sistema permite criar, organizar, buscar e filtrar informações de forma simp
 ---
 
 ## 📅 Cronograma de Entregas
-- **Entrega 1 (22/09/2025)** → [Protótipo visual](https://www.figma.com/design/9uV5xXigW1zoeqREa4u6e6/Tarefa-Frontend---UFG-TJGO?m=auto&t=JKAtn9DRB2dW3C13-1) de navegação feito no Figma ✅.  
+- **Entrega 1 (22/09/2025)** → [Protótipo visual](https://www.figma.com/design/9uV5xXigW1zoeqREa4u6e6/Tarefa-Frontend---UFG-TJGO?m=auto&t=JKAtn9DRB2dW3C13-1) no Figma ✅  
 - **Entrega 2 (29/09/2025)** → CRUD funcional de uma entidade - Será apresentado em aula.  
 - **Entrega 3 (06/10/2025)** → Projeto final completo (CRUD + filtros + responsividade) - Será apresentado em aula.  
 
 ---
 
-## 🚀 Funcionalidades
-- **CRUD de Usuários**: Criar, visualizar, atualizar e excluir usuários.
-- **CRUD de Conteúdo**: Criar, visualizar, atualizar e excluir notas de texto.
-- **Categorização e Tags**: Adicionar categorias/tags para melhor organização.
-- **Busca e Filtragem**: Localizar conteúdos por texto, categoria ou status.
-- **Design Responsivo**: Layout adaptado para desktop, tablet e mobile.
-- **Interface Intuitiva (UX)**: Navegação clara e feedback visual nas interações.
+## 🛠️ Tecnologias Utilizadas
+- React (Front-End)
+- Node.js + Express (Back-End)
+- PostgreSQL (Banco de Dados)
+- Docker
+- CSS3
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
-- **React (Front-End)** → Criação da interface e componentes dinâmicos.  
-- **Node.js + Express (Back-End)** → API REST para lógica de negócio.  
-- **PostgreSQL (Banco de Dados)** → Armazenamento dos usuários e conteúdos.  
-- **Docker** → Containerização para facilitar deploy e desenvolvimento.  
-- **CSS3** → Estilização, design responsivo (mobile-first).  
+## 🚀 Funcionalidades
+- **CRUD de Usuários**
+- **CRUD de Conteúdo**
+- **Categorização e Tags**
+- **Busca e Filtragem**
+- **Design Responsivo**
+- **Interface Intuitiva (UX)**
+
+---
+
+## 📋 Requisitos do Sistema
+
+### 🔹 Requisitos Funcionais
+| ID    | Requisito          | Descrição |
+|-------|-------------------|-----------|
+| RF-01 | CRUD de Usuário   | Criar, ler, atualizar e deletar usuários. |
+| RF-02 | CRUD de Conteúdo  | Criar, ler, atualizar e deletar notas. |
+| RF-03 | Tags              | Adicionar categorias/tags. |
+| RF-04 | Filtragem e Busca | Buscar itens por texto, categoria ou status. |
+| RF-05 | Interface Amigável| Navegação intuitiva e design claro. |
+| RF-06 | Responsividade    | Funcionar em desktop, tablet e mobile. |
+
+### 🔹 Requisitos Não Funcionais
+| ID    | Requisito        | Descrição | Justificativa |
+|-------|-----------------|-----------|---------------|
+| RNF-01| Usabilidade (UX)| Interface clara, lógica e com feedback. | Boa experiência do usuário. |
+| RNF-02| Performance     | Respostas rápidas. | Melhor retenção. |
+| RNF-03| Manutenibilidade| Código modular e comentado. | Facilita evolução. |
+| RNF-04| Segurança       | Hash de senhas e comunicação segura. | Protege dados. |
+| RNF-05| Ambiente DevOps | Docker Compose. | Evita conflitos de ambiente. |
+
+---
+
+## 🗃️ Modelo Entidade-Relacionamento (MER)
+```mermaid
+erDiagram
+    USERS {
+        int user_id PK
+        string nome_completo
+        string email
+        string senha
+        datetime data_criacao
+        datetime data_atualizacao
+    }
+    CONTEUDOS {
+        int conteudo_id PK
+        string titulo
+        string texto
+        string status
+        datetime data_criacao
+        datetime data_atualizacao
+        int user_id FK
+    }
+    TAGS {
+        int tag_id PK
+        string nome
+    }
+    CONTEUDO_TAG {
+        int conteudo_id FK
+        int tag_id FK
+    }
+
+    USERS ||--o{ CONTEUDOS : "possui"
+    CONTEUDOS ||--o{ CONTEUDO_TAG : "associado"
+    TAGS ||--o{ CONTEUDO_TAG : "classifica"
+```
 
 ---
 
 ## 📂 Estrutura do Projeto (Proposta)
-```bash
+\`\`\`bash
 SGCPD/
-│── client/                 # Aplicação React (Front-End)
+│── client/
 │   ├── public/
 │   └── src/
-│       ├── components/     # Componentes reutilizáveis
-│       ├── pages/          # Páginas principais
-│       ├── services/       # Integração com API
+│       ├── components/
+│       ├── pages/
+│       ├── services/
 │       └── App.js
 │
-│── server/                 # Aplicação Node.js (Back-End)
+│── server/
 │   ├── src/
-│   │   ├── controllers/    # Lógica de controle
-│   │   ├── models/         # Modelos do banco (PostgreSQL)
-│   │   ├── routes/         # Rotas da API
-│   │   └── server.js       # Arquivo principal
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   └── server.js
 │   └── package.json
 │
-│── docker-compose.yml      # Orquestração com Docker
-│── README.md               # Documentação do projeto
-```
+│── docker-compose.yml
+│── README.md
+\`\`\`
 
 ---
 
 ## ⚙️ Como Executar o Projeto
 1. Clone este repositório:
-   ```bash
+   \`\`\`bash
    git clone https://github.com/usuario/sgcpd.git
-   ```
+   \`\`\`
 2. Acesse a pasta do projeto:
-   ```bash
+   \`\`\`bash
    cd sgcpd
-   ```
+   \`\`\`
 3. Suba os containers com Docker Compose:
-   ```bash
+   \`\`\`bash
    docker-compose up --build
-   ```
+   \`\`\`
 4. Acesse a aplicação no navegador:  
-   - Front-End → `http://localhost:3000`  
-   - Back-End (API) → `http://localhost:5000`  
-   - Banco de Dados → `localhost:5432`  
+   - Front-End → http://localhost:3000  
+   - Back-End → http://localhost:5000  
+   - Banco → localhost:5432  
 
 ---
 
 ## 👨‍💻 Equipe de Desenvolvimento
-- **Membro 1** → Estrutura de componentes React e navegação.  
-- **Membro 2** → Estilização (CSS) e responsividade.  
-- **Membro 3** → API Node.js (CRUD de usuários e conteúdos).  
-- **Membro 4** → Integração com PostgreSQL, busca, filtragem e documentação.  
+- Owen → Estrutura de componentes React e navegação.  
+- Solenir → Estilização (CSS) e responsividade.  
+- Renato → API Node.js.  
+- Owen/Solenir → Integração com PostgreSQL e busca.  
+- Victor Alexandre → Documentação, Design, QA (PO)  
 
 ---
 
-## 📊 Critérios de Avaliação
-- **Funcionalidade** → 50%  
-- **Design e Usabilidade (UX)** → 20%  
-- **Responsividade** → 20%  
-- **Documentação (README.md)** → 10%  
+## 🗂️ Divisão de Tarefas
+| Tópico       | Tarefa                               | Responsável | Status | Observações |
+|--------------|--------------------------------------|-------------|--------|-------------|
+| Documentação | Criar Readme                         | Victor      | OK     |             |
+| Documentação | Criar MER                            | Owen        | OK     |             |
+| Documentação | Criar DER                            |             |        |             |
+| Documentação | Definir requisitos                   | Renato      | OK     | Será adicionado ao Readme |
+| Documentação | Consolidar documentação              | Victor      |        |             |
+| Design       | Fluxos no Figma                      | Victor      | OK     |             |
+| Código       | API Node.js                          |             |        |             |
+| Código       | Frontend React                       |             |        |             |
+| Código       | Docker e Docker Compose              |             |        |             |
+| Código       | Banco (Postgres ou migrations Ruby)  |             |        |             |
+| Revisão Geral| Revisão                              | Todos       |        |             |
+| Apresentação | Apresentar projeto                   |             |        |             |
 
 ---
 
 ## 📖 Licença
-Este projeto é de uso acadêmico e não possui fins comerciais.
+Projeto acadêmico, sem fins comerciais.
