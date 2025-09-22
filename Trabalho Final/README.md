@@ -135,17 +135,17 @@ SGCPD/
 
 ## ⚙️ Como Executar o Projeto
 1. Clone este repositório:
-   \`\`\`bash
+   ```bash
    git clone https://github.com/usuario/sgcpd.git
-   \`\`\`
+   ```
 2. Acesse a pasta do projeto:
-   \`\`\`bash
+   ```bash
    cd sgcpd
-   \`\`\`
+   ```
 3. Suba os containers com Docker Compose:
-   \`\`\`bash
+   ```bash
    docker-compose up --build
-   \`\`\`
+   ```
 4. Acesse a aplicação no navegador:  
    - Front-End → http://localhost:3000  
    - Back-End → http://localhost:5000  
