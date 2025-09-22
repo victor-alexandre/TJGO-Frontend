@@ -1,0 +1,14 @@
+# Dependências
+/node_modules
+
+# Arquivos de build e produção
+/build
+/dist
+
+# Arquivos de ambiente
+.env
+.env.local
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
