@@ -1,0 +1,50 @@
+# Arquivo: docker-compose.yml
+version: '3.8'
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - sgcpd-network
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./server:/app
+    environment:
+      - DATABASE_URL=postgres://user:password@db:5432/sgcpd_db
+    depends_on:
+      - db
+    networks:
+      - sgcpd-network
+
+  db:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=sgcpd_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - sgcpd-network
+
+networks:
+  sgcpd-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
