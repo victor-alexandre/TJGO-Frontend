@@ -9,6 +9,7 @@ services:
       - "3000:3000"
     volumes:
       - ./client:/app
+      - /app/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true
     networks:
@@ -22,6 +23,7 @@ services:
       - "3001:3001"
     volumes:
       - ./server:/app
+      - /app/node_modules
     environment:
       - DATABASE_URL=postgres://user:password@db:5432/sgcpd_db
     depends_on:
