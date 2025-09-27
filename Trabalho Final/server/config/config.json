@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "user",
+    "password": "password",
+    "database": "sgcpd_db",
+    "host": "db",
+    "dialect": "postgres"
+  }
+}
