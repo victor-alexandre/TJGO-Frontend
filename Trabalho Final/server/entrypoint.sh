@@ -7,5 +7,11 @@ echo "Running database migrations..."
 npx sequelize-cli db:migrate
 echo "Migrations complete."
 
+# Run database seeders
+echo "Running database seeders..."
+npx sequelize-cli db:seed:all
+echo "Seeding complete."
+
+
 # Then, execute the command passed to the script (which will be "npm start" from the Dockerfile)
 exec "$@"
