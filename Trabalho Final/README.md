@@ -83,29 +83,33 @@ O sistema permite criar, organizar, buscar e filtrar informações de forma simp
 ```mermaid
 erDiagram
     USERS {
-        int user_id PK
-        string nome_completo
+        int id PK
+        string name
         string email
-        string senha
-        datetime data_criacao
-        datetime data_atualizacao
+        string password
+        datetime createdAt
+        datetime updatedAt
     }
-    CONTEUDOS {
-        int conteudo_id PK
+    CONTENTS {
+        int id PK
         string titulo
         string texto
         string status
-        datetime data_criacao
-        datetime data_atualizacao
+        datetime createdAt
+        datetime updatedAt
         int user_id FK
     }
     TAGS {
         int tag_id PK
         string nome
+        datetime createdAt
+        datetime updatedAt
     }
-    CONTEUDO_TAG {
-        int conteudo_id FK
+    CONTENT_TAGS {
+        int content_id FK
         int tag_id FK
+        datetime createdAt
+        datetime updatedAt
     }
 
     USERS ||--o{ CONTEUDOS : "possui"
@@ -155,7 +159,11 @@ SGCPD/
    ```bash
    docker-compose up --build
    ```
-4. Acesse a aplicação no navegador:
+4. Rode as migrações do banco de dados:
+   ```bash
+    docker-compose exec server npx sequelize-cli db:migrate
+   ```
+5. Acesse a aplicação no navegador:
    - Front-End → http://localhost:3000
    - Back-End → http://localhost:3001
    - Banco → localhost:5432
