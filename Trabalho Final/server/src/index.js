@@ -3,9 +3,9 @@ const cors = require('cors');
 const setupSwagger = require('./swagger'); // Using require
 
 // Route Imports
-const usersRouter = require('./routes/users');
-const contentsRouter = require('./routes/contents');
-const tagsRouter = require('./routes/tags');
+const usersRouter = require('../routes/users');
+const contentsRouter = require('../routes/contents');
+const tagsRouter = require('../routes/tags');
 
 const app = express();
 app.use(cors());
