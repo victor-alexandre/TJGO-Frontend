@@ -1,7 +1,23 @@
-# Arquivo: server/Dockerfile.dev
 FROM node:18-alpine
 WORKDIR /app
-COPY package.json ./
+
+# Copy both package.json and package-lock.json for consistent installs
+COPY package*.json ./
+
 RUN npm install
+
+# Copy the rest of your application code
 COPY . .
+
+# Copy and make the entrypoint script executable
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+
+# Document the port your application will run on
+EXPOSE 3001
+
+# Set the entrypoint to be executed when the container starts
+ENTRYPOINT ["./entrypoint.sh"]
+
+# The default command that the entrypoint will execute after migrations
 CMD ["npm", "start"]
