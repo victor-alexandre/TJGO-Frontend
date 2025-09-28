@@ -16,9 +16,9 @@ import { loginSchema } from '../../utils/validation';
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loading } = useAuth();
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  
 
   const formik = useFormik({
     initialValues: {
@@ -27,17 +27,15 @@ const SignIn = () => {
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
-      setLoading(true);
       setError('');
-      
+
       const result = await login(values.email, values.password);
       
       if (result.success) {
-        navigate('/dashboard');
+        navigate('/home');
       } else {
         setError(result.error);
       }
-      setLoading(false);
     },
   });
 
