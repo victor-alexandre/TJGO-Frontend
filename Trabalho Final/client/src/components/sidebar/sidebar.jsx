@@ -58,8 +58,8 @@ const Sidebar = ({ open, onToggle }) => {
           border: 'none',
           boxShadow: 2,
           backgroundColor: 'background.paper',
-          position: 'fixed', // Adicionado para fixar o sidebar
-          height: '100vh', // Altura total da viewport
+          position: 'fixed',
+          height: '100vh', 
           top: 0,
           left: 0,
         },
@@ -133,7 +133,7 @@ const Sidebar = ({ open, onToggle }) => {
         ))}
       </List>
       
-      <Divider sx={{ mt: 'auto' }} /> {/* mt: 'auto' para empurrar para baixo */}
+      <Divider sx={{ mt: 'auto' }} /> 
            
     </Drawer>
   );

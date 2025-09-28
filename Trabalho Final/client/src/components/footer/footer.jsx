@@ -76,6 +76,7 @@ const Footer = () => {
               size="small" 
               color="primary"
               aria-label="GitHub"
+              href="https://github.com/victor-alexandre/TJGO-Frontend/tree/main/Trabalho%20Final"
             >
               <GitHubIcon fontSize="small" />
             </IconButton>

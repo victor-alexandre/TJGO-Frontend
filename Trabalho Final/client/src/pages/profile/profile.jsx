@@ -49,7 +49,7 @@ const Profile = () => {
       bio: user?.bio || ''
     },
     validationSchema: profileValidationSchema,
-    enableReinitialize: true, // Permite reinicializar quando user mudar
+    enableReinitialize: true, 
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
