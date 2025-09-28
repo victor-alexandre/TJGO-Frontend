@@ -18,6 +18,8 @@ import {
   InputAdornment,
   Fab,
   Tooltip,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import {
   Delete as DeleteIcon,
@@ -34,6 +36,9 @@ const Home = () => {
   const [selectedTag, setSelectedTag] = useState('');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
+  
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   // Filtrar notas
   const filteredNotes = notes.filter(note => {
@@ -82,7 +87,7 @@ const Home = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ position: 'relative', minHeight: 'calc(100vh - 200px)' }}>
       {/* Cabeçalho e Estatísticas */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Box>
@@ -94,17 +99,6 @@ const Home = () => {
             {selectedTag && ` • Filtrado por: ${selectedTag}`}
           </Typography>
         </Box>
-        
-        <Tooltip title="Criar nova nota">
-          <Fab 
-            color="primary" 
-            aria-label="add"
-            onClick={handleCreateNewNote}
-            size="medium"
-          >
-            <AddIcon />
-          </Fab>
-        </Tooltip>
       </Box>
       
       {/* Filtros e Busca */}
@@ -271,6 +265,31 @@ const Home = () => {
           ))}
         </Grid>
       )}
+
+      {/* FAB - Floating Action Button - Agora próximo ao header */}
+      <Tooltip title="Criar nova nota">
+        <Fab 
+          color="primary" 
+          aria-label="add"
+          onClick={handleCreateNewNote}
+          size="medium"
+          sx={{
+            position: 'fixed',
+            top: 80, 
+            right: 24,
+            zIndex: (theme) => theme.zIndex.speedDial,
+            [theme.breakpoints.up('md')]: {
+              right: theme.spacing(3),          
+            },          
+            '&:hover': {
+              transform: 'scale(1.1)',
+            },
+            transition: 'all 0.2s ease-in-out',
+          }}
+        >
+          <AddIcon />
+        </Fab>
+      </Tooltip>
 
       {/* Dialog de Confirmação de Exclusão */}
       <Dialog

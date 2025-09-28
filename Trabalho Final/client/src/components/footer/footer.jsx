@@ -11,13 +11,13 @@ const Footer = () => {
       sx={{
         py: 3,
         px: 2,
-        mt: 'auto',
         backgroundColor: (theme) =>
           theme.palette.mode === 'light'
             ? theme.palette.grey[100]
             : theme.palette.grey[800],
         borderTop: '1px solid',
-        borderColor: 'divider'
+        borderColor: 'divider',
+        transition: 'margin 0.3s ease', // Transição suave
       }}
     >
       <Container maxWidth="lg">
@@ -29,20 +29,17 @@ const Footer = () => {
           gap: 2 
         }}>
           {/* Informações de Copyright */}
-           <Box sx={{ p: 2 }}>
+          <Box sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
             <Typography variant="body2" color="text.secondary">
               © {currentYear} Notes App. Todos os direitos reservados.
-            </Typography>    
-            
-            <Typography variant="caption" color="text.secondary" display="block">
-            Desenvolvido por:
             </Typography>
-            <Typography variant="caption" color="primary" display="block" fontWeight="bold">
-                José Solenir Lima Figuerêdo
+            <Typography variant="caption" color="text.secondary">
+              José Solenir Lima Figuerêdo
                 Owen Alves Lima
                 Renato Aparecido dos Santos Júnior
                 Victor Alexandre de Carvalho Coelho
-            </Typography>    
+            </Typography>
+            
           </Box>
 
           {/* Links Rápidos */}

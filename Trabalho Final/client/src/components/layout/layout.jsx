@@ -29,7 +29,10 @@ const Layout = () => {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const { user } = useAuth();
 
-  // Mover loadInitialData para dentro do useCallback para evitar recriações desnecessárias
+  const showSnackbar = useCallback((message, severity = 'success') => {
+    setSnackbar({ open: true, message, severity });
+  }, []);
+
   const loadInitialData = useCallback(async () => {
     try {
       setLoading(true);
@@ -44,18 +47,13 @@ const Layout = () => {
     } finally {
       setLoading(false);
     }
-  }, []); 
-
-
-  const showSnackbar = useCallback((message, severity = 'success') => {
-    setSnackbar({ open: true, message, severity });
-  }, []);
+  }, [showSnackbar]);
 
   useEffect(() => {
     if (user) {
       loadInitialData();
     }
-  }, [user, loadInitialData]); 
+  }, [user, loadInitialData]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -65,7 +63,6 @@ const Layout = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
-  
   const handleCreateNote = useCallback(async (noteData) => {
     try {
       const newNote = await api.createNote(noteData);
@@ -89,7 +86,6 @@ const Layout = () => {
     }
   }, [showSnackbar]);
 
-  
   const handleCreateTag = useCallback(async (tagName) => {
     try {
       const newTag = await api.createTag(tagName);
@@ -100,7 +96,6 @@ const Layout = () => {
       throw error;
     }
   }, [showSnackbar]);
-
 
   const handleUpdateUser = useCallback(async (userData) => {
     try {
@@ -131,35 +126,47 @@ const Layout = () => {
           user={user}
         />
         
+        {/* Container principal que inclui Sidebar e Conteúdo */}
         <Box sx={{ display: 'flex', flex: 1 }}>
           <Sidebar 
             open={sidebarOpen} 
             onToggle={toggleSidebar}
           />
           
-          <Box 
-            component="main" 
-            sx={{ 
-              flexGrow: 1, 
-              p: 3,
-              transition: 'margin 0.3s ease',
-              marginLeft: sidebarOpen ? '240px' : '0px',
-              width: sidebarOpen ? 'calc(100% - 240px)' : '100%'
-            }}
-          >
-            <Outlet context={{
-              notes,
-              tags,
-              loading,
-              onCreateNote: handleCreateNote,
-              onDeleteNote: handleDeleteNote,
-              onCreateTag: handleCreateTag,
-              onUpdateUser: handleUpdateUser
-            }} />
+          {/* Container do conteúdo principal + footer */}
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            flexGrow: 1,
+            minHeight: '100vh',
+            transition: 'margin 0.3s ease',
+            marginLeft: sidebarOpen ? '240px' : '0px',
+            width: sidebarOpen ? 'calc(100% - 240px)' : '100%'
+          }}>
+            {/* Área de conteúdo principal */}
+            <Box 
+              component="main" 
+              sx={{ 
+                flexGrow: 1,
+                p: 3,
+                minHeight: 'calc(100vh - 120px)', // Altura total menos header e footer
+              }}
+            >
+              <Outlet context={{
+                notes,
+                tags,
+                loading,
+                onCreateNote: handleCreateNote,
+                onDeleteNote: handleDeleteNote,
+                onCreateTag: handleCreateTag,
+                onUpdateUser: handleUpdateUser
+              }} />
+            </Box>
+            
+            {/* Footer - agora dentro do container flexível */}
+            <Footer />
           </Box>
         </Box>
-        
-        <Footer />
       </Box>
 
       <Snackbar
