@@ -53,7 +53,7 @@ const Login = () => {
       >
         <Paper elevation={3} sx={{ padding: 4, width: '100%' }}>
           <Typography component="h1" variant="h4" align="center" gutterBottom>
-            Login
+            Entrar
           </Typography>
           
           {error && (
