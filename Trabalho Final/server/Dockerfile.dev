@@ -17,7 +17,7 @@ RUN chmod +x entrypoint.sh
 EXPOSE 3001
 
 # Set the entrypoint to be executed when the container starts
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["sh", "./entrypoint.sh"]
 
 # The default command that the entrypoint will execute after migrations
 CMD ["npm", "start"]

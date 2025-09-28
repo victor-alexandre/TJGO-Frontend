@@ -14,7 +14,7 @@ import { useFormik } from 'formik';
 import { useAuth } from '../../contexts/auth/authProvider';
 import { loginSchema } from '../../utils/validation';
 
-const Login = () => {
+const SignIn = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [error, setError] = useState('');
@@ -116,4 +116,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignIn;
