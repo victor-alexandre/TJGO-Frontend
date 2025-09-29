@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const setupSwagger = require('./swagger'); // Using require
@@ -6,6 +8,7 @@ const setupSwagger = require('./swagger'); // Using require
 const usersRouter = require('../routes/users');
 const contentsRouter = require('../routes/contents');
 const tagsRouter = require('../routes/tags');
+const authRouter = require('../routes/auth');
 
 const app = express();
 app.use(cors());
@@ -19,9 +22,10 @@ setupSwagger(app);
 app.use('/api/users', usersRouter);
 app.use('/api/contents', contentsRouter);
 app.use('/api/tags', tagsRouter);
+app.use('/api/auth', authRouter);
 
 // Set the port to 3001 to match your docker-compose file
-const PORT = process.env.PORT || 3001; 
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);
