@@ -1,21 +1,30 @@
 #!/bin/sh
+# Exit immediately if a command exits with a non-zero status.
 set -e
 
-# Run the Sequelize migrations
+# Define o caminho para o nosso arquivo de "trava"
+SEED_LOCK_FILE="/app/.seeded"
+
+# Executa as migrações do banco de dados
 echo "Running database migrations..."
 npx sequelize-cli db:migrate
 echo "Migrations complete."
 
-# Check if users exist in the database
-USER_EXISTS=$(psql -U $DB_USER -d $DB_NAME -tAc "SELECT COUNT(*) FROM \"Users\";" | tr -d '[:space:]')
-
-if [ "$USER_EXISTS" -eq 0 ]; then
-  echo "Running database seeders..."
+# Verifica se o arquivo de trava NÃO existe
+if [ ! -f "$SEED_LOCK_FILE" ]; then
+  # Se não existe, executa o seeder
+  echo "Database not seeded yet. Running seeders..."
   npx sequelize-cli db:seed:all
   echo "Seeding complete."
+  
+  # Cria o arquivo de trava para não executar o seeder novamente
+  touch $SEED_LOCK_FILE
+  echo "Seed lock file created."
 else
-  echo "Skipping seeders (users already exist)."
+  # Se o arquivo já existe, informa que o passo será pulado
+  echo "Database already seeded. Skipping."
 fi
 
-# Start the server
+# Executa o comando principal passado para o script (npm start)
+echo "Starting application..."
 exec "$@"

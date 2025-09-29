@@ -9,6 +9,7 @@ package-lock.json
 # Arquivos de ambiente
 .env
 .env.local
+.seeded
 
 # Arquivos de sistema operacional
 .DS_Store
