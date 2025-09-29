@@ -1,5 +1,5 @@
 // Simulação de chamadas API
-const API_BASE_URL = 'https://sua-api.com/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -112,12 +112,12 @@ export const api = {
     //   headers: getAuthHeaders(),
     //   body: JSON.stringify(userData) 
     // })
-    
+
     // Atualiza no localStorage também
     const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
     const updatedUser = { ...currentUser, ...userData };
     localStorage.setItem('user', JSON.stringify(updatedUser));
-    
+
     return { ...updatedUser, updatedAt: new Date().toISOString() };
   }
 };
