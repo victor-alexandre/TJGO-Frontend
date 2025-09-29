@@ -43,8 +43,9 @@ const Home = () => {
   // Filtrar notas
   const filteredNotes = notes.filter(note => {
     const matchesSearch = note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         note.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesTag = selectedTag ? note.tags.includes(selectedTag) : true;
+                          note.description.toLowerCase().includes(searchTerm.toLowerCase());
+    // CORREÇÃO: Acessar a propriedade 'nome' de cada objeto tag para a busca
+    const matchesTag = selectedTag ? note.tags.some(tag => tag.nome === selectedTag) : true;
     return matchesSearch && matchesTag;
   });
 
@@ -131,12 +132,13 @@ const Home = () => {
             color="primary"
             size="small"
           />
+          {/* CORREÇÃO: Acessar 'tag.id' para a key e 'tag.nome' para o label */}
           {tags.map(tag => (
             <Chip
-              key={tag}
-              label={tag}
-              variant={selectedTag === tag ? 'filled' : 'outlined'}
-              onClick={() => setSelectedTag(tag)}
+              key={tag.id}
+              label={tag.name}
+              variant={selectedTag === tag.name ? 'filled' : 'outlined'}
+              onClick={() => setSelectedTag(tag.name)}
               color="primary"
               size="small"
               icon={<TagIcon />}
@@ -208,10 +210,11 @@ const Home = () => {
                   
                   {/* Tags */}
                   <Box sx={{ mb: 2 }}>
+                    {/* CORREÇÃO: Acessar 'tag.id' para a key e 'tag.name' para o label */}
                     {note.tags.map(tag => (
                       <Chip
-                        key={tag}
-                        label={tag}
+                        key={tag.id}
+                        label={tag.name}
                         size="small"
                         variant="outlined"
                         sx={{ 
@@ -219,7 +222,7 @@ const Home = () => {
                           mb: 0.5,
                           fontSize: '0.7rem'
                         }}
-                        onClick={() => setSelectedTag(tag)}
+                        onClick={() => setSelectedTag(tag.name)}
                       />
                     ))}
                   </Box>
@@ -266,7 +269,7 @@ const Home = () => {
         </Grid>
       )}
 
-      {/* FAB - Floating Action Button - Agora próximo ao header */}
+      {/* FAB - Floating Action Button */}
       <Tooltip title="Criar nova nota">
         <Fab 
           color="primary" 
@@ -275,12 +278,9 @@ const Home = () => {
           size="medium"
           sx={{
             position: 'fixed',
-            top: 80, 
-            right: 24,
+            bottom: theme.spacing(3),
+            right: theme.spacing(3),
             zIndex: (theme) => theme.zIndex.speedDial,
-            [theme.breakpoints.up('md')]: {
-              right: theme.spacing(3),          
-            },          
             '&:hover': {
               transform: 'scale(1.1)',
             },

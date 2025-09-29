@@ -10,6 +10,9 @@ export const useAuth = () => {
   return context;
 };
 
+// URL base da API lida a partir das variáveis de ambiente
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -26,31 +29,23 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      // Simulação de API call
-      const response = await new Promise((resolve) => {
-        setTimeout(() => {
-          if (email === 'user@example.com' && password === 'password') {
-            resolve({
-              token: 'fake-jwt-token',
-              user: {
-                id: 1,
-                name: 'Usuário Teste',
-                email: email
-              }
-            });
-          } else {
-            resolve({ error: 'Credenciais inválidas' });
-          }
-        }, 1000);
+      // Faz a chamada real para a API de login
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
       });
 
-      if (response.error) {
-        throw new Error(response.error);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao fazer login.');
       }
 
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      setUser(response.user);
+      // Salva o token e os dados do usuário no localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      setUser(data.user);
       
       return { success: true };
     } catch (error) {
@@ -60,45 +55,23 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     try {
-      // Simulação de API call
-      const response = await new Promise((resolve) => {
-        setTimeout(() => {
-          // Verifica se o email já existe
-          const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-          const userExists = existingUsers.find(user => user.email === email);
-          
-          if (userExists) {
-            resolve({ error: 'Email já cadastrado' });
-          } else {
-            const newUser = {
-              id: Date.now(),
-              name,
-              email,
-              password: btoa(password) // Não faça isso em produção!
-            };
-            
-            existingUsers.push(newUser);
-            localStorage.setItem('users', JSON.stringify(existingUsers));
-            
-            resolve({
-              token: 'fake-jwt-token',
-              user: {
-                id: newUser.id,
-                name: newUser.name,
-                email: newUser.email
-              }
-            });
-          }
-        }, 1000);
+      // Faz a chamada real para a API de registro
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
       });
 
-      if (response.error) {
-        throw new Error(response.error);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao registrar.');
       }
 
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      setUser(response.user);
+      // Salva o token e os dados do usuário no localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      setUser(data.user);
       
       return { success: true };
     } catch (error) {
@@ -112,11 +85,21 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+    // --- NOVA FUNÇÃO ADICIONADA ---
+  // Centraliza a lógica de atualização do usuário
+  const updateUser = (updatedUserData) => {
+    // Atualiza o localStorage com os novos dados
+    localStorage.setItem('user', JSON.stringify(updatedUserData));
+    // Atualiza o estado do React, que irá renderizar novamente os componentes
+    setUser(updatedUserData);
+  };
+
   const value = {
     user,
     login,
     register,
     logout,
+    updateUser,
     loading
   };
 

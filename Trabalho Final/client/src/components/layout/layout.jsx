@@ -27,7 +27,7 @@ const Layout = () => {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
 
   const showSnackbar = useCallback((message, severity = 'success') => {
     setSnackbar({ open: true, message, severity });
@@ -99,22 +99,20 @@ const Layout = () => {
 
   const handleUpdateUser = useCallback(async (userData) => {
     try {
-      const updatedUser = await api.updateUserProfile(userData);
+      // Passa o ID do usuário autenticado para a chamada da API
+      const updatedUserFromApi = await api.updateUserProfile(user.id, userData); 
+      
+      // ATUALIZAÇÃO PRINCIPAL:
+      // Chama a função centralizada do AuthProvider para atualizar o estado e o localStorage
+      updateUser(updatedUserFromApi);
+
       showSnackbar('Perfil atualizado com sucesso!');
-      return updatedUser;
+      return updatedUserFromApi;
     } catch (error) {
       showSnackbar('Erro ao atualizar perfil', 'error');
       throw error;
     }
-  }, [showSnackbar]);
-
-  if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-        Carregando...
-      </Box>
-    );
-  }
+  }, [showSnackbar, user, updateUser]); // Adiciona updateUser às dependências do useCallback
 
   return (
     <ThemeProvider theme={theme}>

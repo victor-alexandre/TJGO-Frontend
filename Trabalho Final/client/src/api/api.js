@@ -1,123 +1,90 @@
-// Simulação de chamadas API
+// A URL base da sua API, lida a partir do arquivo .env do cliente
 const API_BASE_URL = process.env.REACT_APP_API_URL;
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-// Função para obter o token do localStorage
+// Função auxiliar para obter o token de autenticação do localStorage
 const getAuthToken = () => {
   return localStorage.getItem('token');
 };
 
-// Headers com autenticação
+// Função auxiliar para montar os headers HTTP, incluindo o token de autorização
 const getAuthHeaders = () => {
   const token = getAuthToken();
   return {
     'Content-Type': 'application/json',
-    ...(token && { 'Authorization': `Bearer ${token}` })
+    ...(token && { 'Authorization': `Bearer ${token}` }) // Adiciona o header de autorização se o token existir
   };
 };
 
 export const api = {
+  // --- FUNÇÕES DE NOTAS (CONTEÚDO) ---
+
   async getNotes() {
-    await delay(500);
-    // Substitua por: 
-    // return fetch(`${API_BASE_URL}/notes`, { headers: getAuthHeaders() }).then(res => res.json());
-    return [
-      {
-        id: 1,
-        title: 'Primeira Nota',
-        description: 'Esta é a minha primeira nota no aplicativo.',
-        tags: ['importante', 'trabalho'],
-        createdAt: new Date('2024-01-15').toISOString(),
-        userId: 1
-      },
-      {
-        id: 2,
-        title: 'Lista de Compras',
-        description: 'Leite, ovos, pão, frutas e vegetais.',
-        tags: ['pessoal', 'casa'],
-        createdAt: new Date('2024-01-16').toISOString(),
-        userId: 1
-      }
-    ];
+    const response = await fetch(`${API_BASE_URL}/contents`, {
+      headers: getAuthHeaders()
+    });
+    if (!response.ok) throw new Error('Erro ao buscar as notas.');
+    return response.json();
   },
 
   async createNote(noteData) {
-    await delay(500);
-    // Substitua por: 
-    // return fetch(`${API_BASE_URL}/notes`, { 
-    //   method: 'POST', 
-    //   headers: getAuthHeaders(),
-    //   body: JSON.stringify(noteData) 
-    // })
-    return {
-      id: Date.now(),
-      ...noteData,
-      userId: 1,
-      createdAt: new Date().toISOString()
-    };
+    const response = await fetch(`${API_BASE_URL}/contents`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(noteData)
+    });
+    if (!response.ok) throw new Error('Erro ao criar a nota.');
+    return response.json();
   },
 
   async deleteNote(noteId) {
-    await delay(500);
-    // Substitua por: 
-    // return fetch(`${API_BASE_URL}/notes/${noteId}`, { 
-    //   method: 'DELETE',
-    //   headers: getAuthHeaders()
-    // })
-    return { success: true, message: 'Nota deletada com sucesso' };
+    const response = await fetch(`${API_BASE_URL}/contents/${noteId}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    });
+    if (!response.ok) throw new Error('Erro ao deletar a nota.');
+    // DELETE geralmente não retorna corpo, então não precisamos de .json()
+    return { success: true };
   },
 
+  // --- FUNÇÕES DE TAGS ---
+
   async getTags() {
-    await delay(300);
-    // Substitua por: 
-    // return fetch(`${API_BASE_URL}/tags`, { headers: getAuthHeaders() }).then(res => res.json());
-    return ['importante', 'trabalho', 'pessoal', 'casa', 'estudos', 'urgente'];
+    const response = await fetch(`${API_BASE_URL}/tags`, {
+      headers: getAuthHeaders()
+    });
+    if (!response.ok) throw new Error('Erro ao buscar as tags.');
+    return response.json();
   },
 
   async createTag(tagName) {
-    await delay(300);
-    // Substitua por: 
-    // return fetch(`${API_BASE_URL}/tags`, { 
-    //   method: 'POST', 
-    //   headers: getAuthHeaders(),
-    //   body: JSON.stringify({ name: tagName }) 
-    // })
-    return tagName;
+    const response = await fetch(`${API_BASE_URL}/tags`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ nome: tagName })
+    });
+    if (!response.ok) throw new Error('Erro ao criar a tag.');
+    return response.json();
   },
+
+  // --- FUNÇÕES DE USUÁRIO ---
 
   async getUserProfile() {
-    await delay(400);
-    // Substitua por: 
-    // return fetch(`${API_BASE_URL}/user/profile`, { headers: getAuthHeaders() }).then(res => res.json());
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      return JSON.parse(userData);
-    }
-    return {
-      id: 1,
-      name: 'Usuário Teste',
-      email: 'user@example.com',
-      phone: '(11) 99999-9999',
-      bio: 'Desenvolvedor React',
-      avatar: null
-    };
+    // Esta rota precisa ser protegida e retornar o usuário logado
+    // Vamos assumir uma rota /api/users/profile no backend
+    const response = await fetch(`${API_BASE_URL}/users/profile`, {
+      headers: getAuthHeaders()
+    });
+    if (!response.ok) throw new Error('Erro ao buscar o perfil do usuário.');
+    return response.json();
   },
 
-  async updateUserProfile(userData) {
-    await delay(500);
-    // Substitua por: 
-    // return fetch(`${API_BASE_URL}/user/profile`, { 
-    //   method: 'PUT', 
-    //   headers: getAuthHeaders(),
-    //   body: JSON.stringify(userData) 
-    // })
-
-    // Atualiza no localStorage também
-    const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
-    const updatedUser = { ...currentUser, ...userData };
-    localStorage.setItem('user', JSON.stringify(updatedUser));
-
-    return { ...updatedUser, updatedAt: new Date().toISOString() };
+  async updateUserProfile(userId, userData) {
+    const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(userData)
+    });
+    if (!response.ok) throw new Error('Erro ao atualizar o perfil.');
+    return response.json();
   }
 };
