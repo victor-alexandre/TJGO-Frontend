@@ -1,3 +1,4 @@
+// client/src/components/sidebar/sidebar.jsx
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -14,11 +15,12 @@ import {
   IconButton,
 } from '@mui/material';
 import {
-  Home as HomeIcon,
+  Description as DescriptionIcon,
   NoteAdd as NoteAddIcon,
   Person as PersonIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
+  Label as LabelIcon,
 } from '@mui/icons-material';
 
 const drawerWidth = 240;
@@ -28,16 +30,30 @@ const Sidebar = ({ open, onToggle }) => {
   const location = useLocation();
 
   const menuItems = [
-    { text: 'Home', icon: <HomeIcon />, path: '/' },
-    { text: 'Nova Nota', icon: <NoteAddIcon />, path: '/notes' },
+    { text: 'Minhas Notas', icon: <DescriptionIcon />, path: '/' },
+    { text: 'Nova Nota', icon: <NoteAddIcon />, path: '/notes/new' },
+    { text: 'Gerenciar Tags', icon: <LabelIcon />, path: '/tags' },
     { text: 'Perfil', icon: <PersonIcon />, path: '/profile' },
   ];
 
-  const isActive = (path) => {
-    if (path === '/') {
-      return location.pathname === '/';
+  const isActive = (itemPath) => {
+    // Para 'Minhas Notas' (path: '/'):
+    // Ativo se a rota atual for exatamente '/'
+    // OU se a rota começar com '/notes/' (como '/notes/123/edit')
+    // E NÃO FOR a rota de criação de nova nota ('/notes/new')
+    if (itemPath === '/') {
+      return location.pathname === '/' || (location.pathname.startsWith('/notes/') && !location.pathname.endsWith('/new'));
+    } 
+    // Para 'Nova Nota' (path: '/notes/new'):
+    // Ativo APENAS se a rota atual for exatamente '/notes/new'
+    else if (itemPath === '/notes/new') {
+      return location.pathname === '/notes/new';
     }
-    return location.pathname.startsWith(path);
+    // Para outras rotas (Gerenciar Tags, Perfil):
+    // Ativo se a rota atual começar com o path do item.
+    else {
+      return location.pathname.startsWith(itemPath);
+    }
   };
 
   const handleNavigation = (path) => {
