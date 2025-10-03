@@ -13,71 +13,121 @@ import {
   Avatar,
   IconButton,
   Divider,
+  Alert,
+  Collapse,
 } from '@mui/material';
 import {
   Save as SaveIcon,
   PhotoCamera as PhotoCameraIcon,
+  Lock as LockIcon,
+  Close as CloseIcon,
 } from '@mui/icons-material';
+import { profileValidationSchema } from '../../utils/validation';
 
-// Schema de validação do perfil
-const profileValidationSchema = Yup.object({
-  name: Yup.string()
-    .required('Nome é obrigatório')
-    .min(2, 'Nome deve ter pelo menos 2 caracteres')
-    .max(50, 'Nome deve ter no máximo 50 caracteres'),
-  email: Yup.string()
-    .required('Email é obrigatório')
-    .email('Email deve ser válido'),
-  phone: Yup.string()
-    .matches(/^\(\d{2}\) \d{4,5}-\d{4}$/, 'Telefone deve estar no formato (11) 99999-9999')
-    .nullable(),
-  bio: Yup.string()
-    .max(500, 'Bio deve ter no máximo 500 caracteres')
-    .nullable()
-});
 
 const Profile = () => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [isChangingPassword, setIsChangingPassword] = React.useState(false);
+  const [alert, setAlert] = React.useState({ open: false, message: '', severity: 'success' });
   const { onUpdateUser } = useOutletContext();
   const { user } = useAuth();
 
-  const formik = useFormik({
+  const profileFormik = useFormik({
     initialValues: {
       name: user?.name || '',
       email: user?.email || '',
-      phone: user?.phone || '',
-      bio: user?.bio || ''
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: ''
     },
     validationSchema: profileValidationSchema,
     enableReinitialize: true, 
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
-        await onUpdateUser(values);
+        // Prepara os dados para envio
+        const updateData = {
+          name: values.name,
+          email: values.email
+        };
+
+        // Se o usuário está tentando alterar a senha, inclui os campos de senha
+        if (isChangingPassword && values.currentPassword && values.newPassword) {
+          updateData.currentPassword = values.currentPassword;
+          updateData.newPassword = values.newPassword;
+        }
+
+        await onUpdateUser(updateData);
+        
+        showAlert('Perfil atualizado com sucesso!', 'success');
+        
+        // Reseta os campos de senha após sucesso
+        if (isChangingPassword) {
+          profileFormik.setFieldValue('currentPassword', '');
+          profileFormik.setFieldValue('newPassword', '');
+          profileFormik.setFieldValue('confirmPassword', '');
+          setIsChangingPassword(false);
+        }
       } catch (error) {
         console.error('Erro ao atualizar perfil:', error);
+        showAlert('Erro ao atualizar perfil. Tente novamente.', 'error');
       } finally {
         setIsSubmitting(false);
       }
     }
   });
 
-  const handlePhoneChange = (event) => {
-    let value = event.target.value.replace(/\D/g, '');
+  const showAlert = (message, severity) => {
+    setAlert({ open: true, message, severity });
+  };
+
+  const handleCloseAlert = () => {
+    setAlert({ ...alert, open: false });
+  };
+
+  const handleCancelPasswordChange = () => {
+    profileFormik.setFieldValue('currentPassword', '');
+    profileFormik.setFieldValue('newPassword', '');
+    profileFormik.setFieldValue('confirmPassword', '');
+    setIsChangingPassword(false);
+  };
+
+  const handleTogglePasswordChange = () => {
+    if (isChangingPassword) {
+      handleCancelPasswordChange();
+    } else {
+      setIsChangingPassword(true);
+    }
+  };
+
+  // Verifica se o formulário está válido considerando a senha
+  const isFormValid = () => {
+    if (!profileFormik.isValid) return false;
     
-    if (value.length <= 11) {
-      if (value.length === 0) {
-        formik.setFieldValue('phone', '');
-      } else if (value.length <= 2) {
-        formik.setFieldValue('phone', `(${value}`);
-      } else if (value.length <= 6) {
-        formik.setFieldValue('phone', `(${value.slice(0,2)}) ${value.slice(2)}`);
-      } else if (value.length <= 10) {
-        formik.setFieldValue('phone', `(${value.slice(0,2)}) ${value.slice(2,6)}-${value.slice(6)}`);
-      } else {
-        formik.setFieldValue('phone', `(${value.slice(0,2)}) ${value.slice(2,7)}-${value.slice(7,11)}`);
+    if (isChangingPassword) {
+      try {
+        passwordValidationSchema.validateSync(profileFormik.values);
+        return true;
+      } catch {
+        return false;
       }
     }
+    
+    return true;
+  };
+
+  // Verifica se há alterações no formulário
+  const hasChanges = () => {
+    const baseChanges = profileFormik.dirty;
+    
+    if (isChangingPassword) {
+      return baseChanges || 
+             profileFormik.values.currentPassword || 
+             profileFormik.values.newPassword || 
+             profileFormik.values.confirmPassword;
+    }
+    
+    return baseChanges;
   };
 
   return (
@@ -85,9 +135,29 @@ const Profile = () => {
       <Typography variant="h4" gutterBottom>
         Meu Perfil
       </Typography>
+
+      {/* Alert de feedback */}
+      <Collapse in={alert.open}>
+        <Alert
+          severity={alert.severity}
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={handleCloseAlert}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          {alert.message}
+        </Alert>
+      </Collapse>
       
       <Paper sx={{ p: 4 }}>
-        <Box component="form" onSubmit={formik.handleSubmit}>
+        <Box component="form" onSubmit={profileFormik.handleSubmit}>
           <Grid container spacing={4}>
             {/* Coluna da Foto */}
             <Grid item xs={12} md={4}>
@@ -136,11 +206,11 @@ const Profile = () => {
                     name="name"
                     variant="outlined"
                     fullWidth
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.name && Boolean(formik.errors.name)}
-                    helperText={formik.touched.name && formik.errors.name}
+                    value={profileFormik.values.name}
+                    onChange={profileFormik.handleChange}
+                    onBlur={profileFormik.handleBlur}
+                    error={profileFormik.touched.name && Boolean(profileFormik.errors.name)}
+                    helperText={profileFormik.touched.name && profileFormik.errors.name}
                     disabled={isSubmitting}
                   />
                 </Grid>
@@ -153,54 +223,81 @@ const Profile = () => {
                     type="email"
                     variant="outlined"
                     fullWidth
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
+                    value={profileFormik.values.email}
+                    onChange={profileFormik.handleChange}
+                    onBlur={profileFormik.handleBlur}
+                    error={profileFormik.touched.email && Boolean(profileFormik.errors.email)}
+                    helperText={profileFormik.touched.email && profileFormik.errors.email}
                     disabled={isSubmitting}
                   />
                 </Grid>
-                
-                {/* Telefone */}
+
+                {/* Botão para alterar senha */}
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Telefone"
-                    name="phone"
-                    variant="outlined"
-                    fullWidth
-                    value={formik.values.phone}
-                    onChange={handlePhoneChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.phone && Boolean(formik.errors.phone)}
-                    helperText={formik.touched.phone && formik.errors.phone}
+                  <Button
+                    variant={isChangingPassword ? "outlined" : "text"}
+                    startIcon={<LockIcon />}
+                    onClick={handleTogglePasswordChange}
                     disabled={isSubmitting}
-                    placeholder="(11) 99999-9999"
-                  />
-                </Grid>
-                
-                {/* Bio */}
-                <Grid item xs={12}>
-                  <TextField
-                    label="Bio"
-                    name="bio"
-                    variant="outlined"
                     fullWidth
-                    multiline
-                    rows={4}
-                    value={formik.values.bio}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.bio && Boolean(formik.errors.bio)}
-                    helperText={
-                      formik.touched.bio && formik.errors.bio 
-                        ? formik.errors.bio 
-                        : `${formik.values.bio.length}/500 caracteres`
-                    }
-                    disabled={isSubmitting}
-                    placeholder="Conte um pouco sobre você..."
-                  />
+                    sx={{ height: '56px' }}
+                  >
+                    {isChangingPassword ? 'Cancelar Alteração de Senha' : 'Alterar Senha'}
+                  </Button>
                 </Grid>
+
+                {/* Campos de senha (condicionais) */}
+                {isChangingPassword && (
+                  <>
+                    <Grid item xs={12} md={4}>
+                      <TextField
+                        label="Senha Atual"
+                        name="currentPassword"
+                        type="password"
+                        variant="outlined"
+                        fullWidth
+                        value={profileFormik.values.currentPassword}
+                        onChange={profileFormik.handleChange}
+                        onBlur={profileFormik.handleBlur}
+                        error={profileFormik.touched.currentPassword && Boolean(profileFormik.errors.currentPassword)}
+                        helperText={profileFormik.touched.currentPassword && profileFormik.errors.currentPassword}
+                        disabled={isSubmitting}
+                      />
+                    </Grid>
+                    
+                    <Grid item xs={12} md={4}>
+                      <TextField
+                        label="Nova Senha"
+                        name="newPassword"
+                        type="password"
+                        variant="outlined"
+                        fullWidth
+                        value={profileFormik.values.newPassword}
+                        onChange={profileFormik.handleChange}
+                        onBlur={profileFormik.handleBlur}
+                        error={profileFormik.touched.newPassword && Boolean(profileFormik.errors.newPassword)}
+                        helperText={profileFormik.touched.newPassword && profileFormik.errors.newPassword}
+                        disabled={isSubmitting}
+                      />
+                    </Grid>
+                    
+                    <Grid item xs={12} md={4}>
+                      <TextField
+                        label="Confirmar Nova Senha"
+                        name="confirmPassword"
+                        type="password"
+                        variant="outlined"
+                        fullWidth
+                        value={profileFormik.values.confirmPassword}
+                        onChange={profileFormik.handleChange}
+                        onBlur={profileFormik.handleBlur}
+                        error={profileFormik.touched.confirmPassword && Boolean(profileFormik.errors.confirmPassword)}
+                        helperText={profileFormik.touched.confirmPassword && profileFormik.errors.confirmPassword}
+                        disabled={isSubmitting}
+                      />
+                    </Grid>
+                  </>
+                )}
               </Grid>
               
               <Divider sx={{ my: 3 }} />
@@ -210,8 +307,11 @@ const Profile = () => {
                 <Button
                   type="button"
                   variant="outlined"
-                  onClick={() => formik.resetForm()}
-                  disabled={isSubmitting || !formik.dirty}
+                  onClick={() => {
+                    profileFormik.resetForm();
+                    setIsChangingPassword(false);
+                  }}
+                  disabled={isSubmitting || !hasChanges()}
                 >
                   Descartar Alterações
                 </Button>
@@ -219,7 +319,7 @@ const Profile = () => {
                   type="submit"
                   variant="contained"
                   startIcon={<SaveIcon />}
-                  disabled={isSubmitting || !formik.isValid || !formik.dirty}
+                  disabled={isSubmitting || !isFormValid() || !hasChanges()}
                 >
                   {isSubmitting ? 'Salvando...' : 'Salvar Alterações'}
                 </Button>
@@ -245,7 +345,7 @@ const Profile = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="body2" color="textSecondary">
-            Última atualização:
+              Última atualização:
             </Typography>
             <Typography variant="body1">
               {user?.updatedAt 
