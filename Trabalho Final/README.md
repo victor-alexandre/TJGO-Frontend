@@ -6,7 +6,7 @@
 - [👨‍💻 Equipe de Desenvolvimento](#-equipe-de-desenvolvimento)
 - [📅 Cronograma de Entregas](#-cronograma-de-entregas)
 - [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
-- [🚀 Funcionalidades](#-funcionalidades)
+- [🚀 Funcionalidades Implementadas](#-funcionalidades-implementadas)
 - [📋 Requisitos do Sistema](#-requisitos-do-sistema)
 - [🗃️ Modelo Entidade-Relacionamento (MER)](#️-modelo-entidade-relacionamento-mer)
 - [📂 Estrutura do Projeto Simplificada](#-estrutura-do-projeto-simplificada)
@@ -56,14 +56,14 @@ O sistema permite criar, organizar, buscar e filtrar informações de forma simp
 
 ---
 
-## 🚀 Funcionalidades
+## 🚀 Funcionalidades Implementadas
 
-- **CRUD de Usuários**
-- **CRUD de Conteúdo**
-- **Categorização e Tags**
-- **Busca e Filtragem**
-- **Design Responsivo**
-- **Interface Intuitiva (UX)**
+- **CRUD de Usuários** ✅
+- **CRUD de Conteúdo** ✅
+- **Categorização e Tags** ✅
+- **Busca e Filtragem** ✅
+- **Design Responsivo** ✅
+- **Interface Intuitiva (UX)** ✅
 
 ---
 
