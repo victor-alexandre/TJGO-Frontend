@@ -2,7 +2,6 @@ import React from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { useAuth } from '../../contexts/auth/authProvider';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import {
   Box,
   Typography,
@@ -24,13 +23,13 @@ import {
 } from '@mui/icons-material';
 import { profileValidationSchema } from '../../utils/validation';
 
-
 const Profile = () => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isChangingPassword, setIsChangingPassword] = React.useState(false);
   const [alert, setAlert] = React.useState({ open: false, message: '', severity: 'success' });
   const { onUpdateUser } = useOutletContext();
   const { user } = useAuth();
+
 
   const profileFormik = useFormik({
     initialValues: {
@@ -41,11 +40,10 @@ const Profile = () => {
       confirmPassword: ''
     },
     validationSchema: profileValidationSchema,
-    enableReinitialize: true, 
+    enableReinitialize: true,
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
-        // Prepara os dados para envio
         const updateData = {
           name: values.name,
           email: values.email
@@ -70,7 +68,7 @@ const Profile = () => {
         }
       } catch (error) {
         console.error('Erro ao atualizar perfil:', error);
-        showAlert('Erro ao atualizar perfil. Tente novamente.', 'error');
+        showAlert(error.response?.data?.message || 'Erro ao atualizar perfil. Tente novamente.', 'error');
       } finally {
         setIsSubmitting(false);
       }
@@ -85,49 +83,24 @@ const Profile = () => {
     setAlert({ ...alert, open: false });
   };
 
-  const handleCancelPasswordChange = () => {
-    profileFormik.setFieldValue('currentPassword', '');
-    profileFormik.setFieldValue('newPassword', '');
-    profileFormik.setFieldValue('confirmPassword', '');
-    setIsChangingPassword(false);
-  };
-
+  // O `isChangingPassword` agora serve apenas para controlar a VISIBILIDADE dos campos.
   const handleTogglePasswordChange = () => {
     if (isChangingPassword) {
-      handleCancelPasswordChange();
-    } else {
-      setIsChangingPassword(true);
+      profileFormik.setFieldValue('currentPassword', '');
+      profileFormik.setFieldValue('newPassword', '');
+      profileFormik.setFieldValue('confirmPassword', '');
+      profileFormik.setErrors({
+        ...profileFormik.errors,
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      });
     }
+    setIsChangingPassword(!isChangingPassword);
   };
 
-  // Verifica se o formulário está válido considerando a senha
-  const isFormValid = () => {
-    if (!profileFormik.isValid) return false;
-    
-    if (isChangingPassword) {
-      try {
-        passwordValidationSchema.validateSync(profileFormik.values);
-        return true;
-      } catch {
-        return false;
-      }
-    }
-    
-    return true;
-  };
-
-  // Verifica se há alterações no formulário
   const hasChanges = () => {
-    const baseChanges = profileFormik.dirty;
-    
-    if (isChangingPassword) {
-      return baseChanges || 
-             profileFormik.values.currentPassword || 
-             profileFormik.values.newPassword || 
-             profileFormik.values.confirmPassword;
-    }
-    
-    return baseChanges;
+    return profileFormik.dirty;
   };
 
   return (
@@ -241,8 +214,9 @@ const Profile = () => {
                     disabled={isSubmitting}
                     fullWidth
                     sx={{ height: '56px' }}
+                    color={isChangingPassword ? "error" : "primary"}
                   >
-                    {isChangingPassword ? 'Cancelar Alteração de Senha' : 'Alterar Senha'}
+                    {isChangingPassword ? 'Cancelar Alteração' : 'Alterar Senha'}
                   </Button>
                 </Grid>
 
@@ -319,7 +293,7 @@ const Profile = () => {
                   type="submit"
                   variant="contained"
                   startIcon={<SaveIcon />}
-                  disabled={isSubmitting || !isFormValid() || !hasChanges()}
+                  disabled={isSubmitting || !profileFormik.isValid || !hasChanges()}
                 >
                   {isSubmitting ? 'Salvando...' : 'Salvar Alterações'}
                 </Button>
