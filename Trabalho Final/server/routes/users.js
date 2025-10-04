@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const { User } = require('../models'); // Import the User model from Sequelize
 
 const router = express.Router();
@@ -141,22 +142,37 @@ router.post('/', async (req, res) => {
  *         description: Usuário atualizado com sucesso.
  */
 router.put('/:id', async (req, res) => {
+
   try {
-    const { name, email } = req.body;
-    const [updated] = await User.update({ name, email }, {
-      where: { id: req.params.id }
+    const { name, email, newPassword } = req.body;
+    const userId = req.params.id;
+   
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    const updateData = { name, email };    
+    
+    if (newPassword && newPassword.trim() !== '') {      
+      updateData.password = await bcrypt.hash(newPassword, 10);
+    }
+    
+    const [updated] = await User.update(updateData, {
+      where: { id: userId }
     });
+
     if (updated) {
-      const updatedUser = await User.findByPk(req.params.id, {
+      const updatedUser = await User.findByPk(userId, {
         attributes: { exclude: ['password'] }
       });
       res.status(200).json(updatedUser);
     } else {
-      res.status(404).json({ message: 'Usuário não encontrado' });
+      res.status(404).json({ message: 'Usuário não encontrado ou nenhum dado alterado' });
     }
   } catch (error) {
     res.status(400).json({ error: error.message });
-  }
+  }  
 });
 
 /**
