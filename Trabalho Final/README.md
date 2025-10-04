@@ -195,91 +195,36 @@ Trabalho Final/
 
 ---
 
-## 📘 Guia do Usuário
+```markdown
+## 📘 Manual do Usuário:
 
-O Guia do Usuário descreve como utilizar a aplicação SGCPD e testar a API via Swagger.
+### Funcionalidades Principais
+-   **📝 Notas:** Crie, edite e exclua suas anotações.
 
-1️⃣ Acessando a aplicação
+-   **🏷️ Tags:** Organize tudo com tags personalizadas.
 
-🌐 Abra o navegador e acesse:
+-   **🔍 Busca:** Encontre o que precisa filtrando por título, conteúdo ou tags.
 
-http://localhost:3000
+-   **👤 Perfil:** Atualize seus dados e senha de forma segura.
 
+> **💡 Dica:** Todas as suas alterações são salvas automaticamente!
 
-🔑 Faça login ou registre um novo usuário.
+## 🛠️ API (Backend) e Swagger
 
-2️⃣ Funcionalidades principais
+Teste todos os recursos da API de forma interativa com a documentação Swagger.
 
-📝 Criar Nota → Clique em "Adicionar Nota", preencha título, conteúdo e tags.
+### Acesso ao Swagger
+-   Com o backend no ar, acesse a documentação interativa aqui:
+    ➡️ `http://localhost:3001/api-docs`
 
-✏️ Editar Nota → Abra uma nota existente e clique em "Editar".
+### Como Testar um Endpoint
+1.  **Escolha uma rota** (Ex: `POST /contents` para criar uma nota).
+2.  Clique no botão **"Try it out"**.
+3.  **Preencha os dados** no corpo da requisição.
+4.  Clique em **"Execute"** e veja a mágica acontecer! A resposta do servidor aparecerá logo abaixo.
 
-🗑️ Deletar Nota → Abra uma nota e clique em "Excluir".
-
-🏷️ Gerenciar Tags → Crie, edite ou exclua categorias para organizar suas notas.
-
-🔍 Buscar/Filtrar → Utilize a barra de busca para filtrar notas por título, conteúdo ou tags.
-
-3️⃣ Navegação
-
-📂 Menu lateral → Acesso rápido a notas, tags e perfil.
-
-👤 Perfil do usuário → Atualize dados de cadastro e senha.
-
-4️⃣ Observações
-
-💾 Todas as alterações são salvas automaticamente no banco de dados.
-
-🔄 Para reiniciar a aplicação, certifique-se de que os containers Docker estejam rodando:
-
-docker-compose up
-
-
-💡 Dica: futuramente você pode adicionar prints para ilustrar cada passo.
-
-## 🛠️ Swagger da API
-
-A API do SGCPD possui documentação interativa via Swagger, que permite testar as rotas de forma visual e intuitiva.
-
-1. 🌐 Acessando o Swagger
-
-Certifique-se de que o backend esteja rodando (http://localhost:3001).
-
-Abra no navegador:
-
-http://localhost:3001/api-docs
-
-2. ⚙️ Funcionalidades do Swagger
-
-👀 Visualizar todas as rotas disponíveis → GET, POST, PUT e DELETE.
-
-🧪 Testar requisições diretamente no navegador.
-
-📄 Ver exemplos de request e response para cada endpoint.
-
-3. 🚀 Exemplos rápidos de uso
-
-📝 Criar uma nota
-→ Selecione o endpoint POST /contents.
-→ Preencha os campos titulo, texto e tags.
-→ Clique em Execute para enviar a requisição.
-
-🔍 Buscar notas
-→ Selecione o endpoint GET /contents.
-→ Clique em Execute para visualizar todas as notas cadastradas.
-
-✏️ Atualizar nota
-→ Selecione PUT /contents/{id}.
-→ Informe o id da nota e os campos que deseja atualizar.
-→ Clique em Execute.
-
-🗑️ Deletar nota
-→ Selecione DELETE /contents/{id}.
-→ Informe o id da nota a ser removida.
-→ Clique em Execute.
-
-💡 Dica: Utilize o Swagger para testar rapidamente a API antes de usar o frontend ou para entender os parâmetros de cada rota.
-
+> Use o Swagger para validar a API antes de integrar com o frontend ou para entender rapidamente como cada rota funciona.
+```
 
 
 ---
