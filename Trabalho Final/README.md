@@ -294,36 +294,37 @@ Teste todos os recursos da API de forma interativa com a documentação Swagger.
 | Documentação  | Criar MER do banco                                                 | Owen           | 15/09/2025   | OK     |                                                |
 | Documentação  | Criar DER do banco                                                 | Victor         | 22/09/2025   | OK     |                                                |
 | Documentação  | Definir os requisitos                                              | Renato         | 17/09/2025   | OK     | Os requisitos definidos serão colocados no Readme |
-| Documentação  | Consolidar a documentação no Readme do GitHub                      | Victor         |              | OK     |                                                |
+| Documentação  | Consolidar a documentação no Readme do GitHub                      | Victor         | 05/10/2025   | OK     |                                                |
 | Design        | Criar os fluxos no Figma                                           | Victor         | 21/09/2025   | OK     |                                                |
-| Código        | Criar a API - backend Node                                         | Owen/Victor    |              | OK     |                                                |
-| Código        | Definir rotas                                                      | Victor         |              | OK     |                                                |
-| Código        | Adicionar usuário                                                  | Victor         |              | OK     |                                                |
-| Código        | Editar usuário                                                     | Victor         |              | OK     |                                                |
-| Código        | Adicionar Nota                                                     | Victor/Renato  |              | OK     |                                                |
-| Código        | Buscar Nota                                                        | Victor         |              | OK     |                                                |
-| Código        | Editar Nota                                                        | Victor/Renato  |              | OK     |                                                |
-| Código        | Adicionar TAG                                                      | Victor         |              | OK     |                                                |
-| Código        | Criar o arquivo de configuração Backend: `dockerfile`              | Owen/Victor    |              | OK     |                                                |
-| Código        | Criar o banco - Postgres (ou usar equivalente às migrations Ruby)  | Owen           |              | OK     |                                                |
-| Código        | Criar o frontend - React                                           | Solenir/Renato |              | OK     |                                                |
-| Código        | Definir Componentes                                                | Solenir        |              | OK     |                                                |
-| Código        | Tela Cadastro                                                      | Solenir        |              | OK     |                                                |
-| Código        | Tela Login                                                         | Solenir        |              | OK     |                                                |
-| Código        | Tela página principal                                              | Solenir        |              | OK     |                                                |
-| Código        | Tela de adicionar nota                                             | Renato         |              | OK     |                                                |
-| Código        | Tela de editar nota                                                | Renato         |              | OK     |                                                |
-| Código        | Tela de adicionar tag                                              | Renato         |              | OK     |                                                |
-| Código        | Tela de editar tag                                                 | Renato         |              | OK     |                                                |
-| Código        | Tela de editar perfil                                              | Renato         |              | OK     |                                                |
-| Código        | Menu Lateral                                                       | Solenir        |              | OK     |                                                |
-| Código        | Busca de notas por tag, título e conteúdo                          | Solenir        |              | OK     |                                                |
-| Código        | Criar o arquivo de configuração Frontend: `dockerfile`             | Solenir        |              | OK     |                                                |
-| Código        | Criar o deploy com o Docker Compose                                | Owen           |              | OK     |                                                |
-| Código        | Code Review                                                        | Owen           |              | OK     |                                                |
-| Código        | Ajustes e debug                                                    | Owen           |              | OK     |                                                |
-| Revisão Geral | Revisão geral do projeto                                           | Todos          |              | OK     |                                                |
-| Apresentação  | Apresentar durante a aula o projeto                                | Victor/Owen    |              |        |                                                |
+| Código        | Criar a API - backend Node                                         | Owen/Victor    | 27/09/2025   | OK     |                                                |
+| Código        | Definir rotas                                                      | Victor         | 27/09/2025   | OK     |                                                |
+| Código        | Adicionar usuário                                                  | Victor         | 27/09/2025   | OK     |                                                |
+| Código        | Editar usuário                                                     | Victor         | 27/09/2025   | OK     |                                                |
+| Código        | Adicionar Nota                                                     | Victor/Renato  | 27/09/2025   | OK     |                                                |
+| Código        | Buscar Nota                                                        | Victor         | 27/09/2025   | OK     |                                                |
+| Código        | Editar Nota                                                        | Victor/Renato  | 27/09/2025   | OK     |                                                |
+| Código        | Adicionar TAG                                                      | Victor         | 27/09/2025   | OK     |                                                |
+| Código        | Criar o arquivo de configuração Backend: `dockerfile`              | Owen/Victor    | 22/09/2025   | OK     |                                                |
+| Código        | Criar o banco - Postgres (ou usar equivalente às migrations Ruby)  | Owen           | 22/09/2025   | OK     |                                                |
+| Código        | Criar o frontend - React                                           | Solenir/Renato | 27/09/2025   | OK     |                                                |
+| Código        | Definir Componentes                                                | Solenir        | 23/09/2025   | OK     |                                                |
+| Código        | Tela Cadastro                                                      | Solenir        | 23/09/2025   | OK     |                                                |
+| Código        | Tela Login                                                         | Solenir        | 23/09/2025   | OK     |                                                |
+| Código        | Tela página principal                                              | Solenir        | 30/09/2025   | OK     |                                                |
+| Código        | Tela de adicionar nota                                             | Renato         | 30/09/2025   | OK     |                                                |
+| Código        | Tela de editar nota                                                | Renato         | 30/09/2025   | OK     |                                                |
+| Código        | Tela de adicionar tag                                              | Renato         | 30/09/2025   | OK     |                                                |
+| Código        | Tela de editar tag                                                 | Renato         | 30/09/2025   | OK     |                                                |
+| Código        | Tela de editar perfil                                              | Renato         | 30/09/2025   | OK     |                                                |
+| Código        | Menu Lateral                                                       | Solenir        | 23/09/2025   | OK     |                                                |
+| Código        | Busca de notas por tag, título e conteúdo                          | Solenir        | 03/10/2025   | OK     |                                                |
+| Código        | Criar o arquivo de configuração Frontend: `dockerfile`             | Solenir        | 23/09/2025   | OK     |                                                |
+| Código        | Criar o deploy com o Docker Compose                                | Owen           | 27/09/2025   | OK     |                                                |
+| Código        | Code Review                                                        | Owen           | 04/10/2025   | OK     |                                                |
+| Código        | Ajustes e debug                                                    | Owen           | 04/10/2025   | OK     |                                                |
+| Revisão Geral | Revisão geral do projeto                                           | Todos          | 05/10/2025   | OK     |                                                |
+| Apresentação  | Apresentar durante a aula o projeto                                | Victor/Owen    | 06/10/2025   | TODO   |                                                |
+
 
 ---
 
