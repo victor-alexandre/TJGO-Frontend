@@ -208,13 +208,15 @@ Trabalho Final/
 
 > **💡 Dica:** Todas as suas alterações são salvas automaticamente!
 
+---
+
 ## 🛠️ API (Backend) e Swagger
 
 Teste todos os recursos da API de forma interativa com a documentação Swagger.
 
 ### Acesso ao Swagger
 -   Com o backend no ar, acesse a documentação interativa aqui:
-    ➡️ `http://localhost:3001/api-docs`
+    ➡️ http://localhost:3001/api-docs
 
 ### Como Testar um Endpoint
 1.  **Escolha uma rota** (Ex: `POST /contents` para criar uma nota).
