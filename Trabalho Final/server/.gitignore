@@ -7,7 +7,7 @@ package-lock.json
 /dist
 
 # Arquivos de ambiente
-.env
+#.env
 .env.local
 .seeded
 
