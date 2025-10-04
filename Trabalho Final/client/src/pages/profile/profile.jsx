@@ -20,6 +20,7 @@ import {
   PhotoCamera as PhotoCameraIcon,
   Lock as LockIcon,
   Close as CloseIcon,
+  Delete as DeleteIcon
 } from '@mui/icons-material';
 import { profileValidationSchema } from '../../utils/validation';
 
@@ -27,7 +28,7 @@ const Profile = () => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isChangingPassword, setIsChangingPassword] = React.useState(false);
   const [alert, setAlert] = React.useState({ open: false, message: '', severity: 'success' });
-  const { onUpdateUser } = useOutletContext();
+  const { onUpdateUser, onDeleteUser } = useOutletContext();
   const { user } = useAuth();
 
 
@@ -328,6 +329,28 @@ const Profile = () => {
               }
             </Typography>
           </Grid>
+
+
+          <Grid item xs={12}>
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'flex-end', 
+            mt: 2,
+            pt: 2, 
+            borderTop: 1, 
+            borderColor: 'divider' 
+          }}>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={onDeleteUser}
+              startIcon={<DeleteIcon />}
+              sx={{ mt: 2 }}
+            >
+              Excluir Conta
+            </Button>
+          </Box>
+        </Grid>
         </Grid>
       </Paper>
     </Box>
