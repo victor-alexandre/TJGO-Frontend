@@ -9,8 +9,10 @@
 - [🚀 Funcionalidades](#-funcionalidades)
 - [📋 Requisitos do Sistema](#-requisitos-do-sistema)
 - [🗃️ Modelo Entidade-Relacionamento (MER)](#️-modelo-entidade-relacionamento-mer)
-- [📂 Estrutura do Projeto](#-estrutura-do-projeto-proposta)
+- [📂 Estrutura do Projeto](#-estrutura-do-projeto-simplificada)
 - [⚙️ Como Executar o Projeto](#️-como-executar-o-projeto)
+- [📘 Manual do Usuario](#-manual-do-usuario)
+- [🛠️ API e Swagger](#️-api-e-swagger)
 - [🗂️ Divisão de Tarefas](#️-divisão-de-tarefas)
 - [📖 Licença](#-licença)
 
@@ -195,7 +197,7 @@ Trabalho Final/
 
 ---
 
-## 📘 Manual do Usuário:
+## 📘 Manual do Usuario
 
 ### Funcionalidades Principais
 -   **📝 Notas:** Crie, edite e exclua suas anotações.
@@ -210,7 +212,7 @@ Trabalho Final/
 
 ---
 
-## 🛠️ API (Backend) e Swagger
+## 🛠️ API e Swagger
 
 Teste todos os recursos da API de forma interativa com a documentação Swagger.
 
