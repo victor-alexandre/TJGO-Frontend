@@ -11,7 +11,7 @@
 - [🗃️ Modelo Entidade-Relacionamento (MER)](#️-modelo-entidade-relacionamento-mer)
 - [📂 Estrutura do Projeto](#-estrutura-do-projeto-simplificada)
 - [⚙️ Como Executar o Projeto](#️-como-executar-o-projeto)
-- [📘 Manual do Usuario](#-manual-do-usuario)
+- [📘 Manual do Usuário](#-manual-do-usuário)
 - [🛠️ API e Swagger](#️-api-e-swagger)
 - [🗂️ Divisão de Tarefas](#️-divisão-de-tarefas)
 - [📖 Licença](#-licença)
@@ -197,26 +197,54 @@ Trabalho Final/
 
 ---
 
-## 📘 Manual do Usuario
+## 📘 Manual do Usuário
 
 ### Funcionalidades Principais
 -   **📝 Cadastrar:** Crie seu usuário.
-No seu primeiro acesso você precisará clicar em "cadastre-se"
+No seu primeiro acesso você precisará clicar em "cadastre-se".
 
-Preencha os dados necessários e confirme seu cadastro
+Preencha os dados necessários e confirme seu cadastro clicando em "Cadastrar".
 
-![Cadastro](imagens_tutorial/cadastrese.png)
-![Cadastro](imagens_tutorial/cadastro.png)
+![Cadastro1](imagens_tutorial/cadastrese.png)
+![Cadastro2](imagens_tutorial/cadastro.png)
 
 -   **📝 Logar:** Entre no sistema com o seu usuário.
 
+Após cadastrado você será redirecionado a página inicial do sistema.
+
+Caso você queira acessar novamente, você precisará logar novamente.
+
+Para isso, insira seu email e senha e clique em "Entrar".
+
+![Login](imagens_tutorial/login.png)
+
 -   **📝 Notas:** Crie, edite e exclua suas anotações.
+A partir da pagina inicial, selecione no menu lateral esquerdo a aba de "Nova Nota".
+
+Aqui você poderá criar uma nova nota, associar uma tag existente ou criar uma nova tag.
+
+Além disso, também é possível definir o "Status" da nota.
+
+![paginaInicial](imagens_tutorial/tela_inicial.png)
+![nota1](imagens_tutorial/Criar_nota_e_tag.png)
+![nota2](imagens_tutorial/nota_criada_com_sucesso.png)
+
 
 -   **🏷️ Tags:** Organize tudo com tags personalizadas.
+Na aba de tags você pode gerenciar elas, criando novas tags ou excluindo as já existentes.
+
+![tag1](imagens_tutorial/criar_nova_tag.png)
+![tag2](imagens_tutorial/tag_criada_com_sucesso.png)
+
+
 
 -   **🔍 Busca:** Encontre o que precisa filtrando por título, conteúdo ou tags.
 
 -   **👤 Perfil:** Atualize seus dados e senha de forma segura.
+Você também pode atualizar seus dados pessoais na aba de "Perfil".
+
+![perfil](imagens_tutorial/perfil.png)
+
 
 > **💡 Dica:** Todas as suas alterações são salvas automaticamente!
 
