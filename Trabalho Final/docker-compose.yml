@@ -15,7 +15,7 @@ services:
     networks:
       - sgcpd-network
     env_file:
-      - ./client/.env.template
+      - ./client/.env
 
   server:
     build:
@@ -33,7 +33,7 @@ services:
     networks:
       - sgcpd-network
     env_file:
-      - ./server/.env.template
+      - ./server/.env
 
   db:
     image: postgres:14-alpine
