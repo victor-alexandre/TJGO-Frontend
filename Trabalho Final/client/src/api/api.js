@@ -120,7 +120,17 @@ export const api = {
       method: 'PUT',
       headers: getAuthHeaders(),
       body: JSON.stringify(userData)
-    });
+    }); 
+    return handleApiResponse(response);
+  },
+
+  async deleteUser(userId) {
+    const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    }); 
     return handleApiResponse(response);
   }
+
 };
+
