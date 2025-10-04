@@ -29,7 +29,8 @@ services:
     environment:
       - DATABASE_URL=postgres://user:password@db:5432/sgcpd_db
     depends_on:
-      - db
+      db:
+        condition: service_healthy # <-- Espera o db subir antes de subir o server
     networks:
       - sgcpd-network
     env_file:
