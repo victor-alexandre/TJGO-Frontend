@@ -18,7 +18,7 @@
 
 ## 📌 Descrição
 
-O **SGCPD** é uma aplicação web desenvolvida com **Node.js, React e PostgreSQL**, conteinerizada com **Docker**,
+O **SGCPD** é uma aplicação web desenvolvida com **Node.js, Express, React e PostgreSQL**, conteinerizada com **Docker**,
 para gerenciamento de conteúdos pessoais (ex.: notas de texto).  
 O sistema permite criar, organizar, buscar e filtrar informações de forma simples e intuitiva, inspirado em ferramentas como o [Evernote](https://evernote.com/pt-br).
 
@@ -130,7 +130,7 @@ erDiagram
 
 ---
 
-## 📂 Estrutura do Projeto 
+## 📂 Estrutura do Projeto Simplificada
 
 ```bash
 Trabalho Final/
@@ -138,40 +138,18 @@ Trabalho Final/
 │   ├── public/
 │   └── src/
 │       ├── api/
-│       │   └── api.js
 │       ├── components/
-│       │   ├── auth/
-│       │   ├── footer/
-│       │   ├── header/
-│       │   ├── layout/
-│       │   └── sidebar/
 │       ├── contexts/
 │       ├── pages/
-│       │   ├── home/
-│       │   ├── notes/
-│       │   ├── profile/
-│       │   ├── signIn/
-│       │   ├── signUp/
-│       │   └── tags/
 │       ├── routes/
-│       │   └── index.js
 │       ├── utils/
-│       │   └── validation.js
 │       ├── App.css
 │       ├── App.js
-│       ├── App.test.js
-│       ├── index.css
-│       ├── index.js
-│       ├── logo.svg
-│       ├── reportWebVitals.js
-│       ├── setupTests.js
-│       └── styles.css
 │   ├── .env
 │   ├── .gitignore
 │   ├── Dockerfile.dev
 │   ├── package-lock.json
 │   ├── package.json
-│   └── README.md
 │
 │── server/
 │   ├── config/
@@ -213,6 +191,96 @@ Trabalho Final/
    - Front-End → http://localhost:3000
    - Back-End → http://localhost:3001
    - Banco → localhost:5432
+
+
+---
+
+## 📘 Guia do Usuário
+
+O Guia do Usuário descreve como utilizar a aplicação SGCPD e testar a API via Swagger.
+
+1️⃣ Acessando a aplicação
+
+🌐 Abra o navegador e acesse:
+
+http://localhost:3000
+
+
+🔑 Faça login ou registre um novo usuário.
+
+2️⃣ Funcionalidades principais
+
+📝 Criar Nota → Clique em "Adicionar Nota", preencha título, conteúdo e tags.
+
+✏️ Editar Nota → Abra uma nota existente e clique em "Editar".
+
+🗑️ Deletar Nota → Abra uma nota e clique em "Excluir".
+
+🏷️ Gerenciar Tags → Crie, edite ou exclua categorias para organizar suas notas.
+
+🔍 Buscar/Filtrar → Utilize a barra de busca para filtrar notas por título, conteúdo ou tags.
+
+3️⃣ Navegação
+
+📂 Menu lateral → Acesso rápido a notas, tags e perfil.
+
+👤 Perfil do usuário → Atualize dados de cadastro e senha.
+
+4️⃣ Observações
+
+💾 Todas as alterações são salvas automaticamente no banco de dados.
+
+🔄 Para reiniciar a aplicação, certifique-se de que os containers Docker estejam rodando:
+
+docker-compose up
+
+
+💡 Dica: futuramente você pode adicionar prints para ilustrar cada passo.
+
+## 🛠️ Swagger da API
+
+A API do SGCPD possui documentação interativa via Swagger, que permite testar as rotas de forma visual e intuitiva.
+
+1. 🌐 Acessando o Swagger
+
+Certifique-se de que o backend esteja rodando (http://localhost:3001).
+
+Abra no navegador:
+
+http://localhost:3001/api-docs
+
+2. ⚙️ Funcionalidades do Swagger
+
+👀 Visualizar todas as rotas disponíveis → GET, POST, PUT e DELETE.
+
+🧪 Testar requisições diretamente no navegador.
+
+📄 Ver exemplos de request e response para cada endpoint.
+
+3. 🚀 Exemplos rápidos de uso
+
+📝 Criar uma nota
+→ Selecione o endpoint POST /contents.
+→ Preencha os campos titulo, texto e tags.
+→ Clique em Execute para enviar a requisição.
+
+🔍 Buscar notas
+→ Selecione o endpoint GET /contents.
+→ Clique em Execute para visualizar todas as notas cadastradas.
+
+✏️ Atualizar nota
+→ Selecione PUT /contents/{id}.
+→ Informe o id da nota e os campos que deseja atualizar.
+→ Clique em Execute.
+
+🗑️ Deletar nota
+→ Selecione DELETE /contents/{id}.
+→ Informe o id da nota a ser removida.
+→ Clique em Execute.
+
+💡 Dica: Utilize o Swagger para testar rapidamente a API antes de usar o frontend ou para entender os parâmetros de cada rota.
+
+
 
 ---
 
