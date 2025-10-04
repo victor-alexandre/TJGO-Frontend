@@ -193,6 +193,7 @@ Trabalho Final/
    - Front-End → http://localhost:3000
    - Back-End → http://localhost:3001
    - Banco → localhost:5432
+   - Swagger → http://localhost:3001/api-docs
 
 
 ---
