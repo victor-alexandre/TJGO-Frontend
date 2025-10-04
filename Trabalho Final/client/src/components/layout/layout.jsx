@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, ThemeProvider, createTheme, CssBaseline, Snackbar, Alert } from '@mui/material';
 import Header from '../header/header';
 import Sidebar from '../sidebar/sidebar';
@@ -27,7 +28,8 @@ const Layout = () => {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, logout } = useAuth();
+  const navigate = useNavigate();
 
   const showSnackbar = useCallback((message, severity = 'success') => {
     setSnackbar({ open: true, message, severity });
@@ -114,6 +116,19 @@ const Layout = () => {
     }
   }, [showSnackbar, user, updateUser]); // Adiciona updateUser às dependências do useCallback
 
+  const handleDeleteUser = useCallback(async () => {
+    try {
+      
+      await api.deleteUser(user.id);          
+      // Remove do local storage
+      logout()      
+      navigate('/login', { state: { message: 'Conta excluída com sucesso!' } });
+    } catch (error) {
+      showSnackbar('Erro ao excluir a conta', 'error');
+      throw error;
+    }
+  }, [showSnackbar, user, navigate]); // Adiciona updateUser às dependências do useCallback
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -157,7 +172,8 @@ const Layout = () => {
                 onCreateNote: handleCreateNote,
                 onDeleteNote: handleDeleteNote,
                 onCreateTag: handleCreateTag,
-                onUpdateUser: handleUpdateUser
+                onUpdateUser: handleUpdateUser,
+                onDeleteUser: handleDeleteUser
               }} />
             </Box>
             
