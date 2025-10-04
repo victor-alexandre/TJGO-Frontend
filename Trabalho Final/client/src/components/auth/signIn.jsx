@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   Box,
   TextField,
@@ -7,6 +7,7 @@ import {
   Typography,
   Container,
   Paper,
+  Snackbar,
   Alert,
   CircularProgress,
 } from '@mui/material';
@@ -18,7 +19,18 @@ const SignIn = () => {
   const navigate = useNavigate();
   const { login, loading } = useAuth();
   const [error, setError] = useState('');
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const showSnackbar = useCallback((message, severity = 'success') => {
+    setSnackbar({ open: true, message, severity });
+  }, []);
   
+  const location = useLocation();
+  useEffect(() => {
+    if (location.state?.message) {
+      showSnackbar(location.state.message);
+      navigate(location.pathname, { replace: true });    
+    }
+  }, [location, navigate]);
 
   const formik = useFormik({
     initialValues: {
@@ -38,6 +50,10 @@ const SignIn = () => {
       }
     },
   });
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -110,8 +126,21 @@ const SignIn = () => {
           </Box>
         </Paper>
       </Box>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity}>
+         {snackbar.message}
+        </Alert>
+      </Snackbar>
+      
     </Container>
   );
 };
+
 
 export default SignIn;
