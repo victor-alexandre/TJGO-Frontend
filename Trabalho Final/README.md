@@ -195,7 +195,6 @@ Trabalho Final/
 
 ---
 
-```markdown
 ## 📘 Manual do Usuário:
 
 ### Funcionalidades Principais
@@ -224,7 +223,7 @@ Teste todos os recursos da API de forma interativa com a documentação Swagger.
 4.  Clique em **"Execute"** e veja a mágica acontecer! A resposta do servidor aparecerá logo abaixo.
 
 > Use o Swagger para validar a API antes de integrar com o frontend ou para entender rapidamente como cada rota funciona.
-```
+
 
 
 ---
