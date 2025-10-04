@@ -200,6 +200,16 @@ Trabalho Final/
 ## 📘 Manual do Usuario
 
 ### Funcionalidades Principais
+-   **📝 Cadastrar:** Crie seu usuário.
+No seu primeiro acesso você precisará clicar em "cadastre-se"
+
+Preencha os dados necessários e confirme seu cadastro
+
+![Cadastro](imagens_tutorial/cadastrese.png)
+![Cadastro](imagens_tutorial/cadastro.png)
+
+-   **📝 Logar:** Entre no sistema com o seu usuário.
+
 -   **📝 Notas:** Crie, edite e exclua suas anotações.
 
 -   **🏷️ Tags:** Organize tudo com tags personalizadas.
