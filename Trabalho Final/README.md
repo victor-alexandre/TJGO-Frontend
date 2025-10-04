@@ -319,7 +319,9 @@ Teste todos os recursos da API de forma interativa com a documentação Swagger.
 | Código        | Menu Lateral                                                       | Solenir        |              | OK     |                                                |
 | Código        | Busca de notas por tag, título e conteúdo                          | Solenir        |              | OK     |                                                |
 | Código        | Criar o arquivo de configuração Frontend: `dockerfile`             | Solenir        |              | OK     |                                                |
-| Código        | Criar o deploy com o Docker Compose                                | Owen/Victor    |              | OK     |                                                |
+| Código        | Criar o deploy com o Docker Compose                                | Owen           |              | OK     |                                                |
+| Código        | Code Review                                                        | Owen           |              | OK     |                                                |
+| Código        | Ajustes e debug                                                    | Owen           |              | OK     |                                                |
 | Revisão Geral | Revisão geral do projeto                                           | Todos          |              | OK     |                                                |
 | Apresentação  | Apresentar durante a aula o projeto                                | Victor/Owen    |              |        |                                                |
 
