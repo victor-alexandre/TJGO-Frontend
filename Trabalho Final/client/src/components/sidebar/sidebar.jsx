@@ -83,14 +83,39 @@ const Sidebar = ({ open, onToggle, isDesktop }) => {
             <ListItemButton
               selected={isActive(item.path)}
               onClick={() => handleNavigation(item.path)}
-              sx={{ minHeight: 48, justifyContent: 'center', px: 2.5, mx: 1, my: 0.5, borderRadius: 1 }}
+              sx={{
+                minHeight: 48,
+                justifyContent: 'center',
+                px: 2.5,
+                mx: 1,
+                my: 0.5,
+                borderRadius: 1,
+                '&.Mui-selected': {
+                  backgroundColor: 'primary.main',
+                  color: 'primary.contrastText',
+                  '&:hover': {
+                    backgroundColor: 'primary.dark',
+                  },
+                  '& .MuiListItemIcon-root': {
+                    color: 'primary.contrastText',
+                  }
+                },
+                '&:hover': {
+                  backgroundColor: 'action.hover',
+                }
+              }}
             >
               <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}>
                 {item.icon}
               </ListItemIcon>
               <ListItemText 
                 primary={item.text} 
-                sx={{ opacity: open ? 1 : 0 }} 
+                sx={{ 
+                  opacity: open ? 1 : 0,
+                  '& .MuiTypography-root': {
+                    fontWeight: isActive(item.path) ? 600 : 400
+                  }
+                }} 
               />
             </ListItemButton>
           </ListItem>
