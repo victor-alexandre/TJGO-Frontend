@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/auth/authProvider';
 import { useFormik } from 'formik';
 import {
@@ -9,18 +9,22 @@ import {
   Button,
   Paper,
   Grid,
-  Avatar,
-  IconButton,
   Divider,
   Alert,
   Collapse,
+  IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@mui/material';
 import {
   Save as SaveIcon,
-  PhotoCamera as PhotoCameraIcon,
   Lock as LockIcon,
   Close as CloseIcon,
-  Delete as DeleteIcon
+  Delete as DeleteIcon,
+  ArrowBack as ArrowBackIcon
 } from '@mui/icons-material';
 import { profileValidationSchema } from '../../utils/validation';
 
@@ -29,8 +33,9 @@ const Profile = () => {
   const [isChangingPassword, setIsChangingPassword] = React.useState(false);
   const [alert, setAlert] = React.useState({ open: false, message: '', severity: 'success' });
   const { onUpdateUser, onDeleteUser } = useOutletContext();
-  const { user } = useAuth();
-
+  const { user, updateUser } = useAuth(); 
+  const navigate = useNavigate();
+  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
 
   const profileFormik = useFormik({
     initialValues: {
@@ -55,12 +60,15 @@ const Profile = () => {
           updateData.currentPassword = values.currentPassword;
           updateData.newPassword = values.newPassword;
         }
-
-        await onUpdateUser(updateData);
+        // --- CORREÇÃO AQUI (Parte 2) ---
+        // 1. Chamamos a função e guardamos o retorno (os dados atualizados)
+        const updatedUserResponse = await onUpdateUser(updateData);
+        
+        // 2. Usamos a função do AuthProvider para atualizar o estado global e o localStorage
+        updateUser(updatedUserResponse);
         
         showAlert('Perfil atualizado com sucesso!', 'success');
         
-        // Reseta os campos de senha após sucesso
         if (isChangingPassword) {
           profileFormik.setFieldValue('currentPassword', '');
           profileFormik.setFieldValue('newPassword', '');
@@ -104,11 +112,29 @@ const Profile = () => {
     return profileFormik.dirty;
   };
 
+  const handleOpenDeleteDialog = () => {
+    setOpenDeleteDialog(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
+  };
+
+  const handleConfirmDelete = () => {
+    onDeleteUser(); // Chama a função de exclusão do layout
+    handleCloseDeleteDialog();
+  };
+
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>
-        Meu Perfil
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+        <IconButton onClick={() => navigate('/')} sx={{ mr: 1}}>
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography variant="h4" gutterBottom>
+          Meu Perfil
+        </Typography>
+      </Box>
 
       {/* Alert de feedback */}
       <Collapse in={alert.open}>
@@ -133,45 +159,8 @@ const Profile = () => {
       <Paper sx={{ p: 4 }}>
         <Box component="form" onSubmit={profileFormik.handleSubmit}>
           <Grid container spacing={4}>
-            {/* Coluna da Foto */}
-            <Grid item xs={12} md={4}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                <Avatar
-                  sx={{
-                    width: 120,
-                    height: 120,
-                    bgcolor: 'primary.main',
-                    fontSize: '2rem'
-                  }}
-                  src={user?.avatar}
-                >
-                  {user?.name?.[0]?.toUpperCase() || 'U'}
-                </Avatar>
-                
-                <input
-                  accept="image/*"
-                  style={{ display: 'none' }}
-                  id="avatar-upload"
-                  type="file"
-                />
-                <label htmlFor="avatar-upload">
-                  <IconButton 
-                    color="primary" 
-                    component="span"
-                    disabled={isSubmitting}
-                  >
-                    <PhotoCameraIcon />
-                  </IconButton>
-                </label>
-                
-                <Typography variant="body2" color="textSecondary" align="center">
-                  Clique na câmera para alterar a foto
-                </Typography>
-              </Box>
-            </Grid>
-            
             {/* Coluna dos Dados */}
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12}>
               <Grid container spacing={3}>
                 {/* Nome */}
                 <Grid item xs={12}>
@@ -209,7 +198,7 @@ const Profile = () => {
                 {/* Botão para alterar senha */}
                 <Grid item xs={12} sm={6}>
                   <Button
-                    variant={isChangingPassword ? "outlined" : "text"}
+                    variant={isChangingPassword ? "contained" : "contained"}
                     startIcon={<LockIcon />}
                     onClick={handleTogglePasswordChange}
                     disabled={isSubmitting}
@@ -305,54 +294,55 @@ const Profile = () => {
       </Paper>
       
       {/* Seção de Informações da Conta */}
-      <Paper sx={{ p: 3, mt: 3 }}>
-        <Typography variant="h6" gutterBottom color="primary">
-          Informações da Conta
+      <Paper 
+        sx={{ 
+          p: 3, 
+          mt: 3, 
+          border: 1, 
+          borderColor: 'error.main', 
+          backgroundColor: (theme) => theme.palette.mode === 'dark' ? 'rgba(211, 47, 47, 0.25)' : 'rgba(211, 47, 47, 0.05)'
+        }}
+      >
+        <Typography variant="h6" gutterBottom color="error">
+          Zona de Perigo
         </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body2" color="textSecondary">
-              ID do Usuário:
-            </Typography>
-            <Typography variant="body1">
-              {user?.id || 'N/A'}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body2" color="textSecondary">
-              Última atualização:
-            </Typography>
-            <Typography variant="body1">
-              {user?.updatedAt 
-                ? new Date(user.updatedAt).toLocaleDateString('pt-BR')
-                : 'Nunca'
-              }
-            </Typography>
-          </Grid>
-
-
-          <Grid item xs={12}>
-          <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'flex-end', 
-            mt: 2,
-            pt: 2, 
-            borderTop: 1, 
-            borderColor: 'divider' 
-          }}>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={onDeleteUser}
-              startIcon={<DeleteIcon />}
-              sx={{ mt: 2 }}
-            >
-              Excluir Conta
-            </Button>
-          </Box>
-        </Grid>
-        </Grid>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          A exclusão da sua conta é uma ação permanente e removerá todos os seus dados.
+        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleOpenDeleteDialog}
+            startIcon={<DeleteIcon />}
+          >
+            Excluir Minha Conta
+          </Button>
+        </Box>
       </Paper>
+
+      {/* --- DIÁLOGO DE CONFIRMAÇÃO ADICIONADO --- */}
+      <Dialog
+        open={openDeleteDialog}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="delete-account-dialog-title"
+        aria-describedby="delete-account-dialog-description"
+      >
+        <DialogTitle id="delete-account-dialog-title">
+          {"Confirmar Exclusão Permanente da Conta"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="delete-account-dialog-description">
+            Você tem certeza que deseja excluir sua conta? Todos os seus dados, incluindo suas notas e tags, serão perdidos para sempre. Esta ação não pode ser desfeita.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog}>Cancelar</Button>
+          <Button onClick={handleConfirmDelete} autoFocus color="error">
+            Sim, Excluir a Conta
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

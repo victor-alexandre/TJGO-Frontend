@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import {
   Box,
   Typography,
@@ -7,314 +7,184 @@ import {
   Card,
   CardContent,
   CardActions,
-  Chip,
   IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Chip,
+  Paper,
+  InputBase,
+  Divider,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  OutlinedInput,
   Button,
-  TextField,
-  InputAdornment,
-  Fab,
-  Tooltip,
-  useTheme,
-  useMediaQuery,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@mui/material';
 import {
-  Delete as DeleteIcon,
   Edit as EditIcon,
+  Delete as DeleteIcon,
   Search as SearchIcon,
-  Add as AddIcon,
-  Tag as TagIcon,
 } from '@mui/icons-material';
 
+const getStatusChipColor = (status) => {
+  if (status === 'published' || status === 'Concluido') return 'success';
+  if (status === 'archived' || status === 'Em Andamento') return 'warning';
+  return undefined; 
+};
+
 const Home = () => {
-  const { notes, tags, onDeleteNote } = useOutletContext();
-  const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTag, setSelectedTag] = useState('');
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const {
+    notes,
+    searchTerm,
+    handleSearch,
+    handleEditNote,
+    handleDeleteNote,
+    allTags,
+    selectedStatus,
+    handleStatusChange,
+    selectedTags,
+    handleTagChange,
+  } = useOutletContext();
+
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
-  
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  // Filtrar notas
-  const filteredNotes = notes.filter(note => {
-    const matchesSearch = note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          note.description.toLowerCase().includes(searchTerm.toLowerCase());
-    // CORREÇÃO: Acessar a propriedade 'nome' de cada objeto tag para a busca
-    const matchesTag = selectedTag ? note.tags.some(tag => tag.nome === selectedTag) : true;
-    return matchesSearch && matchesTag;
-  });
-
-  const handleDeleteClick = (note) => {
+  const handleClickDelete = (note) => {
     setNoteToDelete(note);
-    setDeleteDialogOpen(true);
+    setOpenDeleteDialog(true);
   };
 
-  const handleDeleteConfirm = async () => {
-    if (noteToDelete) {
-      await onDeleteNote(noteToDelete.id);
-      setDeleteDialogOpen(false);
-      setNoteToDelete(null);
-    }
-  };
-
-  const handleDeleteCancel = () => {
-    setDeleteDialogOpen(false);
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
     setNoteToDelete(null);
   };
 
-  const handleCreateNewNote = () => {
-    navigate('/notes');
-  };
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const getNotePreview = (description) => {
-    return description.length > 150 
-      ? `${description.substring(0, 150)}...` 
-      : description;
+  const handleConfirmDelete = () => {
+    if (noteToDelete) {
+      handleDeleteNote(noteToDelete.id);
+    }
+    handleCloseDeleteDialog();
   };
 
   return (
-    <Box sx={{ position: 'relative', minHeight: 'calc(100vh - 200px)' }}>
-      {/* Cabeçalho e Estatísticas */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-        <Box>
-          <Typography variant="h4" gutterBottom>
-            Minhas Notas
-          </Typography>
-          <Typography variant="body1" color="textSecondary">
-            {filteredNotes.length} de {notes.length} notas
-            {selectedTag && ` • Filtrado por: ${selectedTag}`}
-          </Typography>
-        </Box>
-      </Box>
+    <Box>
+      <Typography variant="h4" gutterBottom>
+        Minhas Notas
+      </Typography>
       
-      {/* Filtros e Busca */}
-      <Box sx={{ mb: 4 }}>
-        <TextField
-          label="Buscar notas..."
-          variant="outlined"
-          fullWidth
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ mb: 2 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon color="action" />
-              </InputAdornment>
-            ),
-          }}
-        />
-        
-        {/* Tags Filtro */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-          <Typography variant="body2" color="textSecondary" sx={{ mr: 1 }}>
-            Filtrar por tag:
-          </Typography>
-          <Chip
-            label="Todas"
-            variant={selectedTag === '' ? 'filled' : 'outlined'}
-            onClick={() => setSelectedTag('')}
-            color="primary"
-            size="small"
-          />
-          {/* CORREÇÃO: Acessar 'tag.id' para a key e 'tag.nome' para o label */}
-          {tags.map(tag => (
-            <Chip
-              key={tag.id}
-              label={tag.name}
-              variant={selectedTag === tag.name ? 'filled' : 'outlined'}
-              onClick={() => setSelectedTag(tag.name)}
-              color="primary"
-              size="small"
-              icon={<TagIcon />}
-            />
-          ))}
-        </Box>
-      </Box>
+      <Paper sx={{ p: 2, mb: 3 }}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} md={6}>
+            <FormControl fullWidth size="small">
+              <InputLabel>Status</InputLabel>
+              <Select
+                value={selectedStatus}
+                label="Status"
+                onChange={handleStatusChange}
+              >
+                <MenuItem value="all">Todos</MenuItem>
+                <MenuItem value="draft">Rascunho</MenuItem>
+                <MenuItem value="published">Publicado</MenuItem>
+                <MenuItem value="archived">Arquivado</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <FormControl fullWidth size="small">
+              <InputLabel>Tags</InputLabel>
+              <Select
+                multiple
+                value={selectedTags}
+                onChange={handleTagChange}
+                input={<OutlinedInput label="Tags" />}
+                renderValue={(selected) => {
+                  if (selected.length === 0) {
+                    return <em>Todas</em>;
+                  }
+                  return (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map((tagId) => {
+                        const tag = allTags.find(t => t.id === tagId);
+                        return <Chip key={tagId} label={tag ? tag.name : ''} size="small" />;
+                      })}
+                    </Box>
+                  );
+                }}
+              >
+                <MenuItem value="all">
+                  <em>Todas</em>
+                </MenuItem>
+                {allTags && allTags.map((tag) => (
+                  <MenuItem key={tag.id} value={tag.id}>
+                    {tag.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+      </Paper>
 
-      {/* Lista de Notas */}
-      {filteredNotes.length === 0 ? (
-        <Box sx={{ 
-          textAlign: 'center', 
-          py: 8,
-          backgroundColor: 'background.default',
-          borderRadius: 2
-        }}>
-          <Typography variant="h6" color="textSecondary" gutterBottom>
-            {notes.length === 0 ? 'Nenhuma nota encontrada' : 'Nenhuma nota corresponde aos filtros'}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-            {notes.length === 0 
-              ? 'Comece criando sua primeira nota!' 
-              : 'Tente alterar os termos de busca ou remover os filtros de tag'
-            }
-          </Typography>
-          {notes.length === 0 && (
-            <Button 
-              variant="contained" 
-              startIcon={<AddIcon />}
-              onClick={handleCreateNewNote}
-            >
-              Criar Primeira Nota
-            </Button>
-          )}
-        </Box>
-      ) : (
-        <Grid container spacing={3}>
-          {filteredNotes.map((note) => (
-            <Grid item xs={12} sm={6} md={4} key={note.id}>
-              <Card sx={{ 
-                height: '100%', 
-                display: 'flex', 
-                flexDirection: 'column',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: 4
-                }
-              }}>
+      <Paper component="form" onSubmit={(e) => e.preventDefault()} sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', mb: 3 }}>
+        <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Buscar por título ou texto..." value={searchTerm} onChange={handleSearch} />
+        <IconButton type="submit" sx={{ p: '10px' }} aria-label="search"><SearchIcon /></IconButton>
+      </Paper>
+
+      <Grid container spacing={3}>
+        {notes && notes.length > 0 ? (
+          notes.map((note) => (
+            <Grid item key={note.id} xs={12} sm={6} md={4} lg={3}>
+              <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', transition: 'transform 0.2s, box-shadow 0.2s', '&:hover': { transform: 'translateY(-5px)', boxShadow: 6 }}}>
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="h6" gutterBottom noWrap>
-                    {note.title}
-                  </Typography>
-                  
-                  <Typography 
-                    variant="body2" 
-                    color="textSecondary" 
-                    sx={{ 
-                      mb: 2,
-                      minHeight: '60px',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 3,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden'
-                    }}
-                  >
-                    {getNotePreview(note.description)}
-                  </Typography>
-                  
-                  {/* Tags */}
-                  <Box sx={{ mb: 2 }}>
-                    {/* CORREÇÃO: Acessar 'tag.id' para a key e 'tag.name' para o label */}
-                    {note.tags.map(tag => (
-                      <Chip
-                        key={tag.id}
-                        label={tag.name}
-                        size="small"
-                        variant="outlined"
-                        sx={{ 
-                          mr: 0.5, 
-                          mb: 0.5,
-                          fontSize: '0.7rem'
-                        }}
-                        onClick={() => setSelectedTag(tag.name)}
-                      />
+                  <Typography variant="h5" component="div" gutterBottom>{note.titulo}</Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2, wordBreak: 'break-word' }}>{note.texto}</Typography>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                    <Chip
+                      label={note.status}
+                      color={getStatusChipColor(note.status)}
+                      size="small"
+                    />
+                    {note.tags && note.tags.map((tag) => (
+                      <Chip key={tag.id} label={tag.name} size="small" variant="outlined" />
                     ))}
                   </Box>
-                  
-                  {/* Data de Criação */}
-                  <Typography variant="caption" color="textSecondary">
-                    Criada em: {formatDate(note.createdAt)}
-                  </Typography>
                 </CardContent>
-                
-                {/* Ações */}
-                <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
-                  <Box>
-                    <Tooltip title="Editar nota">
-                      <IconButton size="small" color="primary">
-                        <EditIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Excluir nota">
-                      <IconButton 
-                        size="small" 
-                        color="error"
-                        onClick={() => handleDeleteClick(note)}
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                  
-                  <Button 
-                    size="small" 
-                    color="primary"
-                    onClick={() => {
-                      // Aqui você pode implementar a visualização completa da nota
-                      console.log('Visualizar nota:', note.id);
-                    }}
-                  >
-                    Ver Mais
-                  </Button>
+                <Divider />
+                <CardActions sx={{ justifyContent: 'flex-end' }}>
+                  <IconButton size="small" color="primary" onClick={() => handleEditNote(note.id)}><EditIcon /></IconButton>
+                  <IconButton size="small" color="error" onClick={() => handleClickDelete(note)}>
+                    <DeleteIcon />
+                  </IconButton>
                 </CardActions>
               </Card>
             </Grid>
-          ))}
-        </Grid>
-      )}
+          ))
+        ) : (
+          <Grid item xs={12}>
+            <Typography sx={{ mt: 3, textAlign: 'center' }}>Nenhuma nota encontrada com os filtros selecionados.</Typography>
+          </Grid>
+        )}
+      </Grid>
 
-      {/* FAB - Floating Action Button */}
-      <Tooltip title="Criar nova nota">
-        <Fab 
-          color="primary" 
-          aria-label="add"
-          onClick={handleCreateNewNote}
-          size="medium"
-          sx={{
-            position: 'fixed',
-            bottom: theme.spacing(3),
-            right: theme.spacing(3),
-            zIndex: (theme) => theme.zIndex.speedDial,
-            '&:hover': {
-              transform: 'scale(1.1)',
-            },
-            transition: 'all 0.2s ease-in-out',
-          }}
-        >
-          <AddIcon />
-        </Fab>
-      </Tooltip>
-
-      {/* Dialog de Confirmação de Exclusão */}
       <Dialog
-        open={deleteDialogOpen}
-        onClose={handleDeleteCancel}
-        maxWidth="sm"
-        fullWidth
+        open={openDeleteDialog}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
       >
-        <DialogTitle>Confirmar Exclusão</DialogTitle>
+        <DialogTitle id="delete-dialog-title">{"Confirmar Exclusão"}</DialogTitle>
         <DialogContent>
-          <Typography>
-            Tem certeza que deseja excluir a nota "{noteToDelete?.title}"?
-          </Typography>
-          <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-            Esta ação não pode ser desfeita.
-          </Typography>
+          <DialogContentText id="delete-dialog-description">
+            Tem certeza que deseja excluir a nota "{noteToDelete?.titulo}"? Esta ação não pode ser desfeita.
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel}>Cancelar</Button>
-          <Button 
-            onClick={handleDeleteConfirm} 
-            color="error" 
-            variant="contained"
-            startIcon={<DeleteIcon />}
-          >
+          <Button onClick={handleCloseDeleteDialog}>Cancelar</Button>
+          <Button onClick={handleConfirmDelete} autoFocus color="error">
             Excluir
           </Button>
         </DialogActions>

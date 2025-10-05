@@ -1,8 +1,9 @@
 // client/src/pages/notes/notes.jsx
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useParams, useLocation, useOutletContext } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup'; // Biblioteca para validação de schemas
+import { useAuth } from '../../contexts/auth/authProvider';
 
 // Importações de componentes Material-UI
 import {
@@ -63,6 +64,7 @@ const Notes = () => {
   const { id: noteId } = useParams(); // Captura o ID da nota se estiver em modo de edição
   const navigate = useNavigate(); // Função para navegação programática
   const location = useLocation(); // Objeto de localização para verificar o caminho atual
+  const { fetchNotes: refreshNotesList } = useOutletContext(); // Função para atualizar a lista de notas no componente pai (Layout)
 
   // --- Estados Comuns ---
   // Estado para gerenciar o Snackbar (mensagens de feedback global)
@@ -73,6 +75,8 @@ const Notes = () => {
   const [isLoadingList, setIsLoadingList] = useState(true); // Indica se a lista está sendo carregada
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false); // Controla a visibilidade do diálogo de exclusão
   const [noteToDelete, setNoteToDelete] = useState(null); // Armazena a nota a ser excluída
+
+  const { user } = useAuth();
 
   // `useCallback` para otimizar a função `fetchNotes`, prevenindo recriações desnecessárias
   // e garantindo uma referência estável para dependências de `useEffect`.
@@ -137,38 +141,40 @@ const Notes = () => {
     initialValues: {
       titulo: '',
       texto: '',
-      status: 'draft', // Valor inicial para o status
-      tags: [], // Array de IDs de tags selecionadas
+      status: 'draft',
+      tags: [],
     },
-    validationSchema: noteValidationSchema, // Aplica o schema de validação Yup
+    validationSchema: noteValidationSchema,
     onSubmit: async (values) => {
-      setIsSubmittingForm(true); // Ativa o estado de submissão
+      setIsSubmittingForm(true);
       try {
         const noteData = {
-          user_id: 1, // TODO: Substituir por user_id real do contexto de autenticação para segurança e rastreabilidade.
+          user_id: user.id,
           titulo: values.titulo,
           texto: values.texto,
           status: values.status,
-          tagIds: values.tags, // Envia apenas os IDs das tags
+          tagIds: values.tags,
         };
 
         if (isEditMode) {
-          await api.updateNote(noteId, noteData); // Chama a API para atualizar a nota existente
+          await api.updateNote(noteId, noteData);
           setSnackbar({ open: true, message: 'Nota atualizada com sucesso!', severity: 'success' });
         } else {
-          await api.createNote(noteData); // Chama a API para criar uma nova nota
+          await api.createNote(noteData);
           setSnackbar({ open: true, message: 'Nota criada com sucesso!', severity: 'success' });
-          formik.resetForm(); // Limpa o formulário após a criação
         }
-        // Navega para a página inicial (lista de notas) após um pequeno atraso
-        setTimeout(() => {
-          navigate('/');
-        }, 1000);
+
+        // CORREÇÃO: Chama a função para atualizar a lista de notas na Home
+        await refreshNotesList();
+        
+        // Navega para a home imediatamente após a lista ser atualizada
+        navigate('/');
+        
       } catch (error) {
         console.error('Erro ao salvar nota:', error);
         setSnackbar({ open: true, message: error.message || 'Erro ao salvar nota.', severity: 'error' });
       } finally {
-        setIsSubmittingForm(false); // Desativa o estado de submissão
+        setIsSubmittingForm(false);
       }
     }
   });
@@ -407,9 +413,9 @@ const Notes = () => {
                   input={<OutlinedInput label="Status" />}
                   disabled={isSubmittingForm}
                 >
-                  <MenuItem value="draft">Rascunho</MenuItem>
-                  <MenuItem value="published">Publicado</MenuItem>
-                  <MenuItem value="archived">Arquivado</MenuItem>
+                  <MenuItem value="Pendente">Pendente</MenuItem>
+                  <MenuItem value="Em Andamento">Em Andamento</MenuItem>
+                  <MenuItem value="Concluido">Concluido</MenuItem>
                 </Select>
               </FormControl>
               

@@ -1,5 +1,6 @@
 // client/src/pages/tags/TagManagement.jsx
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Typography,
@@ -24,6 +25,7 @@ import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
+  ArrowBack as ArrowBackIcon
 } from '@mui/icons-material';
 import { api } from '../../api/api'; // Importa a API
 
@@ -37,6 +39,7 @@ const TagManagement = () => {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [tagToDelete, setTagToDelete] = useState(null);
+  const navigate = useNavigate();
 
   const fetchTags = useCallback(async () => {
     setIsLoading(true);
@@ -149,9 +152,14 @@ const TagManagement = () => {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>
-        Gerenciar Tags
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+          <IconButton onClick={() => navigate('/')} sx={{ mr: 1}}>
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography variant="h4" gutterBottom>
+            Gerenciar Tags
+          </Typography>
+      </Box>
 
       <Paper sx={{ p: 3, mb: 3 }}>
         <Typography variant="h6" gutterBottom>
