@@ -1,4 +1,3 @@
-// client/src/components/sidebar/sidebar.jsx
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -21,13 +20,31 @@ import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
   Label as LabelIcon,
+  Logout as LogoutIcon,
 } from '@mui/icons-material';
+import { useAuth } from '../../contexts/auth/authProvider';
 
 const drawerWidth = 240;
+const collapsedDrawerWidth = 60;
 
-const Sidebar = ({ open, onToggle }) => {
+const Sidebar = ({ open, onToggle, isDesktop }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useAuth();
+  const handleNavigation = (path) => {
+    navigate(path);
+    if (!isDesktop) {
+      onToggle();
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+    if (!isDesktop) {
+      onToggle();
+    }
+  };
 
   const menuItems = [
     { text: 'Minhas Notas', icon: <DescriptionIcon />, path: '/' },
@@ -37,50 +54,14 @@ const Sidebar = ({ open, onToggle }) => {
   ];
 
   const isActive = (itemPath) => {
-    // Para 'Minhas Notas' (path: '/'):
-    // Ativo se a rota atual for exatamente '/'
-    // OU se a rota começar com '/notes/' (como '/notes/123/edit')
-    // E NÃO FOR a rota de criação de nova nota ('/notes/new')
     if (itemPath === '/') {
       return location.pathname === '/' || (location.pathname.startsWith('/notes/') && !location.pathname.endsWith('/new'));
-    } 
-    // Para 'Nova Nota' (path: '/notes/new'):
-    // Ativo APENAS se a rota atual for exatamente '/notes/new'
-    else if (itemPath === '/notes/new') {
-      return location.pathname === '/notes/new';
     }
-    // Para outras rotas (Gerenciar Tags, Perfil):
-    // Ativo se a rota atual começar com o path do item.
-    else {
-      return location.pathname.startsWith(itemPath);
-    }
+    return location.pathname.startsWith(itemPath);
   };
 
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
-
-  return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: open ? drawerWidth : 0,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: open ? drawerWidth : 0,
-          boxSizing: 'border-box',
-          transition: 'width 0.3s ease',
-          overflowX: 'hidden',
-          border: 'none',
-          boxShadow: 2,
-          backgroundColor: 'background.paper',
-          position: 'fixed',
-          height: '100vh', 
-          top: 0,
-          left: 0,
-        },
-      }}
-    >
+  const drawerContent = (
+    <>
       <Toolbar>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           {open && (
@@ -102,55 +83,61 @@ const Sidebar = ({ open, onToggle }) => {
             <ListItemButton
               selected={isActive(item.path)}
               onClick={() => handleNavigation(item.path)}
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-                mx: 1,
-                my: 0.5,
-                borderRadius: 1,
-                '&.Mui-selected': {
-                  backgroundColor: 'primary.light',
-                  color: 'primary.contrastText',
-                  '&:hover': {
-                    backgroundColor: 'primary.main',
-                  },
-                  '& .MuiListItemIcon-root': {
-                    color: 'primary.contrastText',
-                  }
-                },
-                '&:hover': {
-                  backgroundColor: 'action.hover',
-                }
-              }}
+              sx={{ minHeight: 48, justifyContent: 'center', px: 2.5, mx: 1, my: 0.5, borderRadius: 1 }}
             >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                  color: isActive(item.path) ? 'primary.contrastText' : 'inherit'
-                }}
-              >
+              <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}>
                 {item.icon}
               </ListItemIcon>
               <ListItemText 
                 primary={item.text} 
-                sx={{ 
-                  opacity: open ? 1 : 0,
-                  transition: 'opacity 0.3s ease',
-                  '& .MuiTypography-root': {
-                    fontWeight: isActive(item.path) ? 600 : 400
-                  }
-                }} 
+                sx={{ opacity: open ? 1 : 0 }} 
               />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
       
-      <Divider sx={{ mt: 'auto' }} /> 
-           
+      <Box sx={{ flexGrow: 1 }} />
+      <Divider />
+      <List>
+        <ListItem disablePadding sx={{ display: 'block' }}>
+          <ListItemButton
+            onClick={handleLogout}
+            sx={{ minHeight: 48, justifyContent: 'center', px: 2.5, mx: 1, my: 0.5, borderRadius: 1 }}
+          >
+            <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </>
+  );
+
+  return (
+    <Drawer
+      variant={isDesktop ? 'permanent' : 'temporary'}
+      open={open}
+      onClose={isDesktop ? null : onToggle}
+      ModalProps={{ keepMounted: true }}
+      sx={{
+        width: open ? drawerWidth : collapsedDrawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: open ? drawerWidth : collapsedDrawerWidth,
+          boxSizing: 'border-box',
+          transition: (theme) => theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+          }),
+          overflowX: 'hidden',
+          border: 'none',
+          boxShadow: 2,
+        },
+      }}
+    >
+      {drawerContent}
     </Drawer>
   );
 };
