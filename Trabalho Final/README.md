@@ -118,7 +118,7 @@ erDiagram
         datetime createdAt
         datetime updatedAt
     }
-    CONTENTS_TAGS {
+    CONTENTS_TAG {
         int content_id FK
         int tag_id FK
         datetime createdAt
@@ -126,7 +126,7 @@ erDiagram
     }
 
     USERS ||--o{ CONTENTS : "possui"
-    CONTEUDOS ||--o{ CONTENTS_TAG : "associado"
+    CONTENTS ||--o{ CONTENTS_TAG : "associado"
     TAGS ||--o{ CONTENTS_TAG : "classifica"
 ```
 
