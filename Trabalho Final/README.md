@@ -252,6 +252,9 @@ Na aba de tags você pode gerenciar elas, criando novas tags ou excluindo as já
 
 -   **🔍 Busca:** Encontre o que precisa filtrando por título, conteúdo ou tags.
 
+![busca1](imagens_tutorial/buscar_nota_1.png)
+![busca2](imagens_tutorial/buscar_nota_2.png)
+
 
 ---
 
