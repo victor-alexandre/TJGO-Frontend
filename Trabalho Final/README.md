@@ -197,6 +197,9 @@ Trabalho Final/
    - Banco → localhost:5432
    - Swagger → http://localhost:3001/api-docs
 
+OBS: Se acontecer algum erro durante a execução do comando "docker-compose up --build" verifique se o seu arquivo /server/entrypoint.sh está com o separador LF. Se estiver com CRLF o build irá falhar.
+
+![erro](imagens_tutorial/error.png)
 
 ---
 
