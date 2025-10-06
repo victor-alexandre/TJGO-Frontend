@@ -3,6 +3,7 @@
 set -e
 
 # Define o caminho para o nosso arquivo de "trava"
+#
 SEED_LOCK_FILE="/app/.seeded"
 
 # Executa as migrações do banco de dados
